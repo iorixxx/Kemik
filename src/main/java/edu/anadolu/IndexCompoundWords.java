@@ -137,25 +137,5 @@ public class IndexCompoundWords {
             System.out.println(" caught a " + e.getClass() +
                     "\n with message: " + e.getMessage());
         }
-
-//        Stream<Path> stream = Files.find(Paths.get(home + "/IdeaProjects/42bin_haber/news"), 3, (Path p, BasicFileAttributes att) -> {
-//            if (!att.isRegularFile()) return false;
-//
-//            Path name = p.getFileName();
-//
-//            return (name != null && name.toString().endsWith(".txt"));
-//        });
-//
-//        HashSet<String> categories = new HashSet<>();
-//
-//        stream.forEach(path -> {
-//            String name = path.getParent().getFileName().toString();
-//
-//            categories.add(name);
-//        });
-//
-//        for (String name : categories) {
-//            System.out.println(name);
-//        }
     }
 }
