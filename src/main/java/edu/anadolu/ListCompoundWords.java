@@ -72,7 +72,7 @@ public class ListCompoundWords {
         TermStats[] terms = getHighFreqTerms(reader, numTerms, field, comparator);
 
         for (int i = 0; i < terms.length; i++) {
-            System.out.printf(Locale.ROOT, "%s:%s \t totalTF = %,d \t docFreq = %,d \n",
+            System.out.printf(Locale.ROOT, "%s: %-30s \t totalTF = %,d \t docFreq = %,d \n",
                     terms[i].field, terms[i].termtext.utf8ToString(), terms[i].totalTermFreq, terms[i].docFreq);
         }
         reader.close();

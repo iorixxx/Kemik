@@ -1,0 +1,206 @@
+Top-100 terms indexed using shingle filter in saglik category:
+
+contents: ya da                          	 totalTF = 793 	 docFreq = 441
+contents: Prof Dr                        	 totalTF = 902 	 docFreq = 363
+contents: diye konuştu                   	 totalTF = 402 	 docFreq = 350
+contents: ifade eden                     	 totalTF = 298 	 docFreq = 251
+contents: daha fazla                     	 totalTF = 305 	 docFreq = 222
+contents: hem de                         	 totalTF = 253 	 docFreq = 197
+contents: Tıp Fakültesi                  	 totalTF = 244 	 docFreq = 195
+contents: en önemli                      	 totalTF = 228 	 docFreq = 186
+contents: ve bu                          	 totalTF = 197 	 docFreq = 180
+contents: Doç Dr                         	 totalTF = 428 	 docFreq = 179
+contents: Bu nedenle                     	 totalTF = 205 	 docFreq = 169
+contents: önemli bir                     	 totalTF = 172 	 docFreq = 155
+contents: Öğretim Üyesi                  	 totalTF = 168 	 docFreq = 151
+contents: şunları kaydetti               	 totalTF = 153 	 docFreq = 148
+contents: bir şekilde                    	 totalTF = 180 	 docFreq = 142
+contents: ifade etti                     	 totalTF = 164 	 docFreq = 141
+contents: şöyle devam                    	 totalTF = 148 	 docFreq = 139
+contents: devam etti                     	 totalTF = 145 	 docFreq = 137
+contents: daha çok                       	 totalTF = 167 	 docFreq = 136
+contents: Anabilim Dalı                  	 totalTF = 152 	 docFreq = 134
+contents: olmak üzere                    	 totalTF = 158 	 docFreq = 133
+contents: dile getiren                   	 totalTF = 158 	 docFreq = 133
+contents: dikkati çeken                  	 totalTF = 152 	 docFreq = 132
+contents: herhangi bir                   	 totalTF = 171 	 docFreq = 131
+contents: en çok                         	 totalTF = 156 	 docFreq = 130
+contents: şöyle devam etti               	 totalTF = 137 	 docFreq = 129
+contents: yaptığı açıklamada             	 totalTF = 128 	 docFreq = 127
+contents: en az                          	 totalTF = 151 	 docFreq = 127
+contents: çok önemli                     	 totalTF = 150 	 docFreq = 123
+contents: yanı sıra                      	 totalTF = 139 	 docFreq = 120
+contents: çok daha                       	 totalTF = 153 	 docFreq = 118
+contents: olduğunu söyledi               	 totalTF = 134 	 docFreq = 118
+contents: Dalı Öğretim                   	 totalTF = 125 	 docFreq = 118
+contents: olduğunu ifade                 	 totalTF = 124 	 docFreq = 116
+contents: ne kadar                       	 totalTF = 147 	 docFreq = 116
+contents: söz konusu                     	 totalTF = 140 	 docFreq = 115
+contents: ile ilgili                     	 totalTF = 143 	 docFreq = 114
+contents: Dalı Öğretim Üyesi             	 totalTF = 121 	 docFreq = 114
+contents: Sağlık Bakanlığı               	 totalTF = 190 	 docFreq = 112
+contents: neden olan                     	 totalTF = 132 	 docFreq = 110
+contents: şunları söyledi                	 totalTF = 109 	 docFreq = 107
+contents: daha az                        	 totalTF = 156 	 docFreq = 106
+contents: bağlı olarak                   	 totalTF = 135 	 docFreq = 105
+contents: bir hastalık                   	 totalTF = 143 	 docFreq = 103
+contents: Üniversitesi Tıp               	 totalTF = 119 	 docFreq = 102
+contents: Başkanı Prof                   	 totalTF = 123 	 docFreq = 101
+contents: ortaya çıkan                   	 totalTF = 121 	 docFreq = 100
+contents: Başkanı Prof Dr                	 totalTF = 122 	 docFreq = 100
+contents: Üyesi Prof Dr                  	 totalTF = 101 	 docFreq = 96
+contents: Üyesi Prof                     	 totalTF = 101 	 docFreq = 96
+contents: Üniversitesi Tıp Fakültesi     	 totalTF = 109 	 docFreq = 93
+contents: işaret eden                    	 totalTF = 103 	 docFreq = 93
+contents: pek çok                        	 totalTF = 122 	 docFreq = 92
+contents: AA muhabirine                  	 totalTF = 92 	 docFreq = 92
+contents: şu bilgileri                   	 totalTF = 92 	 docFreq = 91
+contents: Öğretim Üyesi Prof Dr          	 totalTF = 95 	 docFreq = 90
+contents: Öğretim Üyesi Prof             	 totalTF = 95 	 docFreq = 90
+contents: daha da                        	 totalTF = 105 	 docFreq = 89
+contents: dikkati çekti                  	 totalTF = 88 	 docFreq = 86
+contents: en sık                         	 totalTF = 112 	 docFreq = 85
+contents: olduğu için                    	 totalTF = 99 	 docFreq = 84
+contents: şöyle konuştu                  	 totalTF = 87 	 docFreq = 83
+contents: bu konuda                      	 totalTF = 92 	 docFreq = 83
+contents: önemli olduğunu                	 totalTF = 86 	 docFreq = 82
+contents: son derece                     	 totalTF = 104 	 docFreq = 82
+contents: dikkat çeken                   	 totalTF = 98 	 docFreq = 81
+contents: aynı zamanda                   	 totalTF = 90 	 docFreq = 81
+contents: ile birlikte                   	 totalTF = 85 	 docFreq = 80
+contents: hakkında bilgi                 	 totalTF = 83 	 docFreq = 80
+contents: büyük bir                      	 totalTF = 87 	 docFreq = 79
+contents: olduğu gibi                    	 totalTF = 89 	 docFreq = 78
+contents: muhabirine yaptığı açıklamada  	 totalTF = 78 	 docFreq = 78
+contents: muhabirine yaptığı             	 totalTF = 78 	 docFreq = 78
+contents: ifadelerini kullandı           	 totalTF = 80 	 docFreq = 78
+contents: en büyük                       	 totalTF = 88 	 docFreq = 78
+contents: Dalı Öğretim Üyesi Prof Dr     	 totalTF = 81 	 docFreq = 78
+contents: Dalı Öğretim Üyesi Prof        	 totalTF = 81 	 docFreq = 78
+contents: AA muhabirine yaptığı açıklamada 	 totalTF = 78 	 docFreq = 78
+contents: AA muhabirine yaptığı          	 totalTF = 78 	 docFreq = 78
+contents: için de                        	 totalTF = 81 	 docFreq = 77
+contents: şu bilgileri verdi             	 totalTF = 76 	 docFreq = 76
+contents: bu tür                         	 totalTF = 91 	 docFreq = 76
+contents: bilgileri verdi                	 totalTF = 76 	 docFreq = 76
+contents: Bilim Dalı                     	 totalTF = 80 	 docFreq = 76
+contents: olan bir                       	 totalTF = 82 	 docFreq = 75
+contents: olduğunu belirten              	 totalTF = 85 	 docFreq = 73
+contents: dile getirdi                   	 totalTF = 79 	 docFreq = 73
+contents: için bir                       	 totalTF = 80 	 docFreq = 72
+contents: her yıl                        	 totalTF = 104 	 docFreq = 72
+contents: Anabilim Dalı Öğretim          	 totalTF = 77 	 docFreq = 72
+contents: daha sık                       	 totalTF = 93 	 docFreq = 71
+contents: şeklinde konuştu               	 totalTF = 72 	 docFreq = 70
+contents: neden olabilir                 	 totalTF = 87 	 docFreq = 70
+contents: Anabilim Dalı Öğretim Üyesi    	 totalTF = 75 	 docFreq = 70
+contents: yer alan                       	 totalTF = 75 	 docFreq = 69
+contents: uzun süre                      	 totalTF = 90 	 docFreq = 69
+contents: olduğunu belirtti              	 totalTF = 73 	 docFreq = 69
+contents: olduğunu belirterek            	 totalTF = 74 	 docFreq = 69
+contents: Op Dr                          	 totalTF = 124 	 docFreq = 69
+contents: Dalı Başkanı                   	 totalTF = 72 	 docFreq = 69
+
+
+Top-100 terms indexed using shingle filter in ekonomi category:
+
+contents: diye konuştu                   	 totalTF = 822 	 docFreq = 637
+contents: en büyük                       	 totalTF = 704 	 docFreq = 457
+contents: olmak üzere                    	 totalTF = 526 	 docFreq = 404
+contents: Türkiye nin                    	 totalTF = 806 	 docFreq = 404
+contents: Türkiye de                     	 totalTF = 780 	 docFreq = 392
+contents: Yönetim Kurulu                 	 totalTF = 647 	 docFreq = 370
+contents: önemli bir                     	 totalTF = 459 	 docFreq = 356
+contents: ifade eden                     	 totalTF = 426 	 docFreq = 341
+contents: Kurulu Başkanı                 	 totalTF = 514 	 docFreq = 326
+contents: ya da                          	 totalTF = 420 	 docFreq = 307
+contents: Yönetim Kurulu Başkanı         	 totalTF = 465 	 docFreq = 300
+contents: milyar dolar                   	 totalTF = 651 	 docFreq = 299
+contents: hem de                         	 totalTF = 373 	 docFreq = 299
+contents: ile ilgili                     	 totalTF = 376 	 docFreq = 296
+contents: ve bu                          	 totalTF = 335 	 docFreq = 295
+contents: söz konusu                     	 totalTF = 378 	 docFreq = 295
+contents: 2012 yılında                   	 totalTF = 510 	 docFreq = 291
+contents: yer alan                       	 totalTF = 346 	 docFreq = 286
+contents: ifade etti                     	 totalTF = 335 	 docFreq = 285
+contents: ise yüzde                      	 totalTF = 431 	 docFreq = 281
+contents: şunları söyledi                	 totalTF = 301 	 docFreq = 277
+contents: yanı sıra                      	 totalTF = 313 	 docFreq = 273
+contents: bu yıl                         	 totalTF = 369 	 docFreq = 265
+contents: yeni bir                       	 totalTF = 338 	 docFreq = 264
+contents: Genel Müdürü                   	 totalTF = 376 	 docFreq = 262
+contents: daha fazla                     	 totalTF = 338 	 docFreq = 257
+contents: milyon dolar                   	 totalTF = 765 	 docFreq = 255
+contents: en çok                         	 totalTF = 386 	 docFreq = 252
+contents: 2012 de                        	 totalTF = 349 	 docFreq = 247
+contents: en yüksek                      	 totalTF = 424 	 docFreq = 243
+contents: şöyle konuştu                  	 totalTF = 253 	 docFreq = 237
+contents: bir şekilde                    	 totalTF = 280 	 docFreq = 237
+contents: büyük bir                      	 totalTF = 283 	 docFreq = 236
+contents: milyar dolarlık                	 totalTF = 411 	 docFreq = 228
+contents: Buna göre                      	 totalTF = 242 	 docFreq = 222
+contents: geçen yıl                      	 totalTF = 303 	 docFreq = 220
+contents: 2012 yılı                      	 totalTF = 339 	 docFreq = 220
+contents: devam etti                     	 totalTF = 237 	 docFreq = 219
+contents: yaptığı açıklamada             	 totalTF = 227 	 docFreq = 217
+contents: ile birlikte                   	 totalTF = 249 	 docFreq = 215
+contents: göre yüzde                     	 totalTF = 418 	 docFreq = 203
+contents: bu yana                        	 totalTF = 236 	 docFreq = 199
+contents: bu konuda                      	 totalTF = 226 	 docFreq = 193
+contents: dile getiren                   	 totalTF = 226 	 docFreq = 192
+contents: en önemli                      	 totalTF = 231 	 docFreq = 190
+contents: daha da                        	 totalTF = 228 	 docFreq = 190
+contents: en fazla                       	 totalTF = 314 	 docFreq = 189
+contents: için de                        	 totalTF = 227 	 docFreq = 188
+contents: Merkez Bankası                 	 totalTF = 382 	 docFreq = 188
+contents: olduğunu söyledi               	 totalTF = 208 	 docFreq = 187
+contents: milyon lira                    	 totalTF = 413 	 docFreq = 185
+contents: devam ediyor                   	 totalTF = 220 	 docFreq = 182
+contents: şöyle devam                    	 totalTF = 188 	 docFreq = 178
+contents: herhangi bir                   	 totalTF = 224 	 docFreq = 177
+contents: dünyanın en                    	 totalTF = 260 	 docFreq = 177
+contents: de bu                          	 totalTF = 191 	 docFreq = 176
+contents: 2013 te                        	 totalTF = 261 	 docFreq = 175
+contents: şöyle devam etti               	 totalTF = 184 	 docFreq = 174
+contents: yüzde 10                       	 totalTF = 223 	 docFreq = 173
+contents: en az                          	 totalTF = 243 	 docFreq = 173
+contents: 2013 yılında                   	 totalTF = 233 	 docFreq = 173
+contents: çok önemli                     	 totalTF = 224 	 docFreq = 172
+contents: bir önceki                     	 totalTF = 361 	 docFreq = 172
+contents: dile getirdi                   	 totalTF = 201 	 docFreq = 171
+contents: 2 bin                          	 totalTF = 274 	 docFreq = 171
+contents: Şu anda                        	 totalTF = 196 	 docFreq = 168
+contents: şu anda                        	 totalTF = 220 	 docFreq = 166
+contents: Öte yandan                     	 totalTF = 176 	 docFreq = 165
+contents: milyon dolarlık                	 totalTF = 259 	 docFreq = 161
+contents: şunları kaydetti               	 totalTF = 172 	 docFreq = 159
+contents: 1 milyar                       	 totalTF = 316 	 docFreq = 158
+contents: ne kadar                       	 totalTF = 205 	 docFreq = 156
+contents: milyar dolara                  	 totalTF = 256 	 docFreq = 155
+contents: Türkiye ye                     	 totalTF = 253 	 docFreq = 154
+contents: verilerine göre                	 totalTF = 185 	 docFreq = 153
+contents: daha önce                      	 totalTF = 185 	 docFreq = 153
+contents: Söz konusu                     	 totalTF = 181 	 docFreq = 152
+contents: 1 milyon                       	 totalTF = 243 	 docFreq = 148
+contents: olduğunu belirterek            	 totalTF = 148 	 docFreq = 140
+contents: yıl önce                       	 totalTF = 165 	 docFreq = 139
+contents: daha çok                       	 totalTF = 169 	 docFreq = 138
+contents: yer alıyor                     	 totalTF = 175 	 docFreq = 137
+contents: da bu                          	 totalTF = 146 	 docFreq = 137
+contents: yüzde 20                       	 totalTF = 176 	 docFreq = 134
+contents: yıl içinde                     	 totalTF = 148 	 docFreq = 132
+contents: de yüzde                       	 totalTF = 165 	 docFreq = 132
+contents: 2013 yılı                      	 totalTF = 171 	 docFreq = 132
+contents: dikkat çeken                   	 totalTF = 157 	 docFreq = 131
+contents: ve Ticaret                     	 totalTF = 281 	 docFreq = 130
+contents: Türkiye deki                   	 totalTF = 164 	 docFreq = 130
+contents: olarak belirlendi              	 totalTF = 145 	 docFreq = 128
+contents: faaliyet gösteren              	 totalTF = 154 	 docFreq = 128
+contents: olduğunu ifade                 	 totalTF = 137 	 docFreq = 127
+contents: Ocak 2013                      	 totalTF = 197 	 docFreq = 127
+contents: oranı yüzde                    	 totalTF = 197 	 docFreq = 126
+contents: şeklinde konuştu               	 totalTF = 132 	 docFreq = 124
+contents: 2011 yılında                   	 totalTF = 183 	 docFreq = 124
+contents: böyle bir                      	 totalTF = 159 	 docFreq = 123
+contents: yüzde 50                       	 totalTF = 168 	 docFreq = 122
+contents: yer aldı                       	 totalTF = 146 	 docFreq = 122
