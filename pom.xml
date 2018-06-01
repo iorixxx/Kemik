@@ -29,7 +29,6 @@
 
         <plugins>
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -61,7 +60,7 @@
 
     <dependencies>
 
-  		<dependency>
+        <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
             <version>${lucene.version}</version>
@@ -115,7 +114,7 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
