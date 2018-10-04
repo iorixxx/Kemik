@@ -3,6 +3,7 @@ package edu.anadolu;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.FlattenGraphFilterFactory;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.shingle.ShingleFilterFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -21,6 +22,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IndexCompoundWords {
     private static final String INDEX_PATH = "compound-words";
@@ -56,11 +59,18 @@ public class IndexCompoundWords {
             Field pathField = new StringField("path", file.toString(), Field.Store.YES);
             doc.add(pathField);
 
+            //TODO
+            Field categoryField = new StringField("category", file.toString(), Field.Store.YES);
+            doc.add(categoryField);
+
             // Add the contents of the file to a field named "contents".  Specify a Reader,
             // so that the text of the file is tokenized and indexed, but not stored.
             // Note that FileReader expects the file to be in UTF-8 encoding.
             // If that's not the case searching for special characters will fail.
-            doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
+            doc.add(new TextField("shingle", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
+
+            // TODO
+            doc.add(new TextField("plain", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
 
             if (writer.getConfig().getOpenMode() == IndexWriterConfig.OpenMode.CREATE) {
                 // New index, so we just add the document (no old document can be there):
@@ -76,9 +86,18 @@ public class IndexCompoundWords {
         }
     }
 
+    private static Analyzer plain() throws IOException {
+        return CustomAnalyzer.builder()
+                .withTokenizer("standard")
+                //  .addTokenFilter("apostrophe")
+                .addTokenFilter("turkishlowercase")
+                .build();
+    }
+
     private static Analyzer shingle() throws IOException {
         return CustomAnalyzer.builder()
                 .withTokenizer("standard")
+                .addTokenFilter("turkishlowercase")
                 .addTokenFilter(ShingleFilterFactory.class,
                         "minShingleSize", "2",
                         "maxShingleSize", "15",
@@ -88,54 +107,52 @@ public class IndexCompoundWords {
                 .build();
     }
 
-    public static void main(String[] args) throws IOException {
-        String home = System.getProperty("user.home");
+    static PerFieldAnalyzerWrapper analyzerWrapper() throws IOException {
+        Map<String, Analyzer> analyzerMap = new HashMap<>();
+        analyzerMap.put("shingle", shingle());
+        analyzerMap.put("plain", plain());
 
-        boolean create = true;
+        return new PerFieldAnalyzerWrapper(plain(), analyzerMap);
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        String home = System.getProperty("user.home");
 
         String docsPath = home + "/IdeaProjects/42bin_haber/news/" + CATEGORY;
 
         Path docDir = Paths.get(docsPath);
 
-        try {
-            System.out.println("Indexing to directory '" + INDEX_PATH + "'...");
 
-            Directory dir = FSDirectory.open(Paths.get(INDEX_PATH));
-            Analyzer analyzer = shingle();
-            IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+        System.out.println("Indexing to directory '" + INDEX_PATH + "'...");
 
-            if (create) {
-                // Create a new index in the directory, removing any
-                // previously indexed documents:
-                iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-            } else {
-                // Add new documents to an existing index:
-                iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-            }
+        Directory dir = FSDirectory.open(Paths.get(INDEX_PATH));
 
-            // Optional: for better indexing performance, if you
-            // are indexing many documents, increase the RAM
-            // buffer.  But if you do this, increase the max heap
-            // size to the JVM (eg add -Xmx512m or -Xmx1g):
-            //
-            // iwc.setRAMBufferSizeMB(256.0);
 
-            IndexWriter writer = new IndexWriter(dir, iwc);
-            indexDocs(writer, docDir);
+        IndexWriterConfig iwc = new IndexWriterConfig(analyzerWrapper());
 
-            // NOTE: if you want to maximize search performance,
-            // you can optionally call forceMerge here.  This can be
-            // a terribly costly operation, so generally it's only
-            // worth it when your index is relatively static (ie
-            // you're done adding documents to it):
-            //
-            // writer.forceMerge(1);
+        iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
-            writer.close();
 
-        } catch (IOException e) {
-            System.out.println(" caught a " + e.getClass() +
-                    "\n with message: " + e.getMessage());
-        }
+        // Optional: for better indexing performance, if you
+        // are indexing many documents, increase the RAM
+        // buffer.  But if you do this, increase the max heap
+        // size to the JVM (eg add -Xmx512m or -Xmx1g):
+        //
+        // iwc.setRAMBufferSizeMB(256.0);
+
+        IndexWriter writer = new IndexWriter(dir, iwc);
+        indexDocs(writer, docDir);
+
+        // NOTE: if you want to maximize search performance,
+        // you can optionally call forceMerge here.  This can be
+        // a terribly costly operation, so generally it's only
+        // worth it when your index is relatively static (ie
+        // you're done adding documents to it):
+        //
+
+        writer.forceMerge(1);
+        writer.close();
+
     }
 }
