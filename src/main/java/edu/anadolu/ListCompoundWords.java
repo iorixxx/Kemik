@@ -18,16 +18,17 @@
 package edu.anadolu;
 
 import org.apache.lucene.index.*;
-import org.apache.lucene.store.Directory;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.PriorityQueue;
-import org.apache.lucene.util.SuppressForbidden;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Comparator;
-import java.util.Locale;
 
 /**
  * <code>ListCompoundWords</code> class extracts the top n most frequent terms
@@ -39,57 +40,92 @@ import java.util.Locale;
  */
 public class ListCompoundWords {
 
-    // The top numTerms will be displayed
-    public static final int DEFAULT_NUMTERMS = 100;
 
-    @SuppressForbidden(reason = "System.out required: command line tool")
+    private static TermStats[] highFreqTerms(int numTerms, Comparator<TermStats> comparator) throws Exception {
+
+        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get("KemikIndex")));
+        TermStats[] terms = getHighFreqTerms(reader, numTerms, "shingle", comparator);
+        reader.close();
+
+        return terms;
+    }
+
     public static void main(String[] args) throws Exception {
-        String field = null;
-        int numTerms = DEFAULT_NUMTERMS;
 
-        if (args.length == 0 || args.length > 4) {
-            usage();
-            System.exit(1);
+        TermStats[] terms = highFreqTerms(10000000, new DocFreqComparator());
+
+        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get("KemikIndex")));
+
+        IndexSearcher searcher = new IndexSearcher(reader);
+
+        PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get("kemik42bin.txt"), StandardCharsets.UTF_8));
+
+
+        for (TermStats term : terms) {
+
+            String merged = term.termtext.utf8ToString().replaceAll(" ", "");
+            if (isNumeric(merged)) continue;
+            Query query = new TermQuery(new Term("plain", merged));
+
+            BooleanQuery bq = new BooleanQuery.Builder().add(query, BooleanClause.Occur.MUST).build();
+
+            int count = searcher.count(bq);
+
+            if (count == 0) continue;
+
+            out.println(term.termtext.utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq + "\t" + term.docFreq + "\t" + count);
+
         }
 
-        Directory dir = FSDirectory.open(Paths.get(args[0]));
+        out.flush();
+        out.close();
 
-        Comparator<TermStats> comparator = new DocFreqComparator();
+        for (String category : new String[]{"dunya", "guncel", "planet", "spor", "yasam", "ekonomi", "kultur-sanat", "saglik", "teknoloji", "genel", "magazin", "siyaset", "turkiye"}) {
 
-        for (int i = 1; i < args.length; i++) {
-            if (args[i].equals("-t")) {
-                comparator = new TotalTermFreqComparator();
-            } else {
-                try {
-                    numTerms = Integer.parseInt(args[i]);
-                } catch (NumberFormatException e) {
-                    field = args[i];
-                }
+            out = new PrintWriter(Files.newBufferedWriter(Paths.get(category + ".txt"), StandardCharsets.UTF_8));
+
+            final Query filter = new TermQuery(new Term("category", category));
+            for (TermStats term : terms) {
+
+
+                String merged = term.termtext.utf8ToString().replaceAll(" ", "");
+
+                if (isNumeric(merged)) continue;
+                Query query = new TermQuery(new Term("plain", merged));
+
+                BooleanQuery bq = new BooleanQuery.Builder()
+                        .add(query, BooleanClause.Occur.MUST)
+                        .add(filter, BooleanClause.Occur.FILTER)
+                        .build();
+
+                int count = searcher.count(bq);
+
+                if (count == 0) continue;
+
+                out.println(term.termtext.utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq + "\t" + term.docFreq + "\t" + count);
+
             }
-        }
 
-        IndexReader reader = DirectoryReader.open(dir);
-        TermStats[] terms = getHighFreqTerms(reader, numTerms, field, comparator);
-
-        for (int i = 0; i < terms.length; i++) {
-            System.out.printf(Locale.ROOT, "%s: %-30s \t totalTF = %,d \t docFreq = %,d \n",
-                    terms[i].field, terms[i].termtext.utf8ToString(), terms[i].totalTermFreq, terms[i].docFreq);
+            out.flush();
+            out.close();
         }
         reader.close();
     }
 
-    @SuppressForbidden(reason = "System.out required: command line tool")
-    private static void usage() {
-        System.out
-                .println("\n\n"
-                        + "java org.apache.lucene.misc.ListCompoundWords <index dir> [-t] [number_terms] [field]\n\t -t: order by totalTermFreq\n\n");
+    private static boolean isNumeric(String strNum) {
+        try {
+            Double.parseDouble(strNum);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return false;
+        }
+        return true;
     }
 
     /**
      * Returns TermStats[] ordered by the specified comparator
      */
     public static TermStats[] getHighFreqTerms(IndexReader reader, int numTerms, String field, Comparator<TermStats> comparator) throws Exception {
-        TermStatsQueue tiq = null;
+        TermStatsQueue tiq;
 
         if (field != null) {
             Terms terms = MultiFields.getTerms(reader, field);
