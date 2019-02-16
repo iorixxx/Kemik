@@ -30,6 +30,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
+import static edu.anadolu.App.categories;
+
 /**
  * <code>ListCompoundWords</code> class extracts the top n most frequent terms
  * (by document frequency) from an existing Lucene index and reports their
@@ -41,9 +43,9 @@ import java.util.Comparator;
 public class ListCompoundWords {
 
 
-    private static TermStats[] highFreqTerms(int numTerms, Comparator<TermStats> comparator) throws Exception {
+    private static TermStats[] highFreqTerms(int numTerms, Comparator<TermStats> comparator, DocType type) throws Exception {
 
-        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get("KemikIndex")));
+        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(type.toString())));
         TermStats[] terms = getHighFreqTerms(reader, numTerms, "shingle", comparator);
         reader.close();
 
@@ -52,13 +54,21 @@ public class ListCompoundWords {
 
     public static void main(String[] args) throws Exception {
 
-        TermStats[] terms = highFreqTerms(10000000, new DocFreqComparator());
+        for (DocType type : DocType.values()) {
+            list(type);
+        }
+    }
 
-        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get("KemikIndex")));
+    public static void list(DocType type) throws Exception {
+
+        TermStats[] terms = highFreqTerms(10000000, new DocFreqComparator(), type);
+
+        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(type.toString())));
 
         IndexSearcher searcher = new IndexSearcher(reader);
 
-        PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get("kemik42bin.txt"), StandardCharsets.UTF_8));
+
+        PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), type.toString() + ".txt"), StandardCharsets.UTF_8));
 
 
         for (TermStats term : terms) {
@@ -80,9 +90,9 @@ public class ListCompoundWords {
         out.flush();
         out.close();
 
-        for (String category : new String[]{"dunya", "guncel", "planet", "spor", "yasam", "ekonomi", "kultur-sanat", "saglik", "teknoloji", "genel", "magazin", "siyaset", "turkiye"}) {
+        for (String category : categories(type)) {
 
-            out = new PrintWriter(Files.newBufferedWriter(Paths.get(category + ".txt"), StandardCharsets.UTF_8));
+            out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), category + ".txt"), StandardCharsets.UTF_8));
 
             final Query filter = new TermQuery(new Term("category", category));
             for (TermStats term : terms) {
@@ -213,8 +223,8 @@ public class ListCompoundWords {
             return comparator.compare(termInfoA, termInfoB) < 0;
         }
 
-        protected void fill(String field, TermsEnum termsEnum) throws IOException {
-            BytesRef term = null;
+        void fill(String field, TermsEnum termsEnum) throws IOException {
+            BytesRef term;
             while ((term = termsEnum.next()) != null) {
                 insertWithOverflow(new TermStats(field, term, termsEnum.docFreq(), termsEnum.totalTermFreq()));
             }

@@ -20,21 +20,18 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
-import static edu.anadolu.DocType.Kemik42bin;
 import static edu.anadolu.IndexCompoundWords.analyzerWrapper;
 
-/**
- * Hello world!
- */
 public class App {
 
     public static void main(String[] args) throws Exception {
 
-        DocType type = DocType.Milliyet405bin;
+        //  DocType type = DocType.Milliyet405bin;
 
-        arrf(type);
-        index(type);
-
+        for (DocType type : DocType.values()) {
+            arrf(type);
+            index(type);
+        }
     }
 
 
@@ -88,7 +85,7 @@ public class App {
 
     };
 
-    static String repo(DocType type) {
+    private static String repo(DocType type) {
         switch (type) {
             case Milliyet405bin:
                 return "/Users/iorixxx/Documents/MilliyetCollectionZipFiles";
@@ -101,7 +98,7 @@ public class App {
         }
     }
 
-    static IDoc factory(DocType type, Path p) {
+    private static IDoc factory(DocType type, Path p) {
         switch (type) {
             case Milliyet405bin:
                 return new Milliyet(p);
