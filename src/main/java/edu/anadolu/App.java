@@ -11,70 +11,74 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
+import static edu.anadolu.DocType.Kemik42bin;
 import static edu.anadolu.IndexCompoundWords.analyzerWrapper;
 
 /**
  * Hello world!
  */
 public class App {
-    private static List<String> readAllLines(Path p) {
-        try {
-            return Files.readAllLines(p, StandardCharsets.UTF_8);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
-    }
 
     public static void main(String[] args) throws Exception {
 
-        Stream<Path> stream = Files.find(Paths.get("/Users/iorixxx/Downloads/42bin_haber/news"), 3, matcher);
+        DocType type = DocType.Milliyet405bin;
 
-        PrintStream fileStream = new PrintStream(Files.newOutputStream(Paths.get("/Users/iorixxx/Desktop/42bin_haber.arff")));
+        arrf(type);
+        index(type);
 
-        fileStream.println("@RELATION 42bin");
+    }
 
-        fileStream.println("@ATTRIBUTE class {dunya,guncel,planet,spor,yasam,ekonomi,kultur-sanat,saglik,teknoloji,genel,magazin,siyaset,turkiye}");
+
+    public static void arrf(DocType type) throws Exception {
+
+        Stream<Path> stream = Files.find(Paths.get(repo(type)), 3, matcher);
+
+        PrintStream fileStream = new PrintStream(Files.newOutputStream(Paths.get(type.toString() + ".arff")));
+
+        fileStream.println("@RELATION " + type.toString());
+
+        fileStream.println("@ATTRIBUTE class {" + String.join(",", categories(type)) + "}");
 
         fileStream.println("@ATTRIBUTE content string");
 
         fileStream.println("@data");
 
 
+        final Map<String, Integer> categories = new HashMap<>();
+
         stream.forEach(p -> {
 
-            String category = p.getParent().getFileName().toString();
+            IDoc iDoc = factory(type, p);
 
-            StringBuilder builder = new StringBuilder();
+            String category = iDoc.category();
 
-            for (String line : readAllLines(p)) {
+            int count = categories.getOrDefault(category, 0);
+            categories.put(category, ++count);
 
-                builder.append(line).append("\n");
+            if (!("astro".equals(category) || "tv".equals(category) || "sanat".equals(category))) {
+                String content = weka.core.Utils.quote(iDoc.content().trim());
+                fileStream.println(category + "," + content);
             }
-
-            String content = weka.core.Utils.quote(builder.toString().trim());
-
-            fileStream.println(category + "," + content);
-
 
         });
 
         fileStream.flush();
         fileStream.close();
-
-        index();
+        categories.entrySet().forEach(System.out::println);
 
     }
 
-    static BiPredicate<Path, BasicFileAttributes> matcher = (Path p, BasicFileAttributes att) -> {
+
+    private static BiPredicate<Path, BasicFileAttributes> matcher = (Path p, BasicFileAttributes att) -> {
 
         if (!att.isRegularFile()) return false;
 
@@ -84,10 +88,48 @@ public class App {
 
     };
 
+    static String repo(DocType type) {
+        switch (type) {
+            case Milliyet405bin:
+                return "/Users/iorixxx/Documents/MilliyetCollectionZipFiles";
+            case TTC3600:
+                return "/Users/iorixxx/Desktop/TTC-3600-master/TTC-3600_Orj";
+            case Kemik42bin:
+                return "/Users/iorixxx/Downloads/42bin_haber/news";
+            default:
+                throw new AssertionError(type);
+        }
+    }
 
-    static void index() throws IOException {
+    static IDoc factory(DocType type, Path p) {
+        switch (type) {
+            case Milliyet405bin:
+                return new Milliyet(p);
+            case TTC3600:
+                return new TTC3600(p);
+            case Kemik42bin:
+                return new Kemik(p);
+            default:
+                throw new AssertionError(type);
+        }
+    }
 
-        Directory dir = FSDirectory.open(Paths.get("KemikIndex"));
+    static String[] categories(DocType type) {
+        switch (type) {
+            case Milliyet405bin:
+                return Milliyet.categories;
+            case TTC3600:
+                return TTC3600.categories;
+            case Kemik42bin:
+                return Kemik.categories;
+            default:
+                throw new AssertionError(type);
+        }
+    }
+
+    static void index(DocType type) throws IOException {
+
+        Directory dir = FSDirectory.open(Paths.get(type.toString()));
         IndexWriterConfig iwc = new IndexWriterConfig(analyzerWrapper());
 
         iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
@@ -96,28 +138,18 @@ public class App {
         IndexWriter writer = new IndexWriter(dir, iwc);
 
 
-        Stream<Path> stream = Files.find(Paths.get("/Users/iorixxx/Downloads/42bin_haber/news"), 3, matcher);
+        Stream<Path> stream = Files.find(Paths.get(repo(type)), 3, matcher);
 
         stream.parallel().forEach(p -> {
 
-            String category = p.getParent().getFileName().toString();
-
-            String pk = category + "_" + p.getFileName();
-
-            pk = pk.substring(0, pk.length() - 4);
+            IDoc iDoc = factory(type, p);
 
             Document doc = new Document();
 
-            doc.add(new StringField("id", pk, Field.Store.YES));
+            doc.add(new StringField("id", iDoc.id(), Field.Store.YES));
+            doc.add(new StringField("category", iDoc.category(), Field.Store.YES));
 
-            doc.add(new StringField("category", category, Field.Store.YES));
-
-            StringBuilder builder = new StringBuilder();
-            for (String line : readAllLines(p)) {
-                builder.append(line).append("\n");
-            }
-
-            String content = builder.toString().trim();
+            String content = iDoc.content();
 
             try {
                 doc.add(new TextField("shingle", content, Field.Store.NO));
@@ -130,11 +162,15 @@ public class App {
 
         });
 
+        int numDocs;
         try {
             writer.commit();
             writer.forceMerge(1);
+            numDocs = writer.numDocs();
         } finally {
             writer.close();
         }
+
+        System.out.println(numDocs + " indexed.");
     }
 }
