@@ -12,7 +12,6 @@ class Factory {
     static String repo(DocType type) {
 
         Properties properties = readProperties();
-        System.out.println(properties);
 
         if (properties.getProperty(type.name()) != null)
             return properties.getProperty(type.name());
