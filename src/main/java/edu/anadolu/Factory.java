@@ -13,7 +13,7 @@ class Factory {
 
         Properties properties = readProperties();
 
-        if (properties.getProperty(type.name()) != null)
+        if (properties != null && properties.getProperty(type.name()) != null)
             return properties.getProperty(type.name());
 
         switch (type) {
