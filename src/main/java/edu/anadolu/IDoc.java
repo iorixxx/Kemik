@@ -7,7 +7,4 @@ public interface IDoc {
     String id();
 
     String category();
-
-    DocType type();
-
 }

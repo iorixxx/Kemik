@@ -1,6 +1,7 @@
 package edu.anadolu;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -18,15 +19,11 @@ public class Kemik implements IDoc {
             category = p.getParent().getFileName().toString();
             String pk = category + "_" + p.getFileName();
             id = pk.substring(0, pk.length() - 4);
-
-            StringBuilder builder = new StringBuilder();
-
-            for (String line : Files.readAllLines(p)) {
-                line = line.trim();
-                if (line.length() == 0) continue;
-                builder.append(line).append("\n");
-            }
-            this.content = builder.toString().trim().replaceAll("\u2019", "'");
+            byte[] encoded = Files.readAllBytes(p);
+            this.content = new String(encoded, StandardCharsets.UTF_8)
+                    .replaceAll("\u2019", "'")
+                    .replaceAll("\\s+", " ")
+                    .trim();
 
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
@@ -43,11 +40,6 @@ public class Kemik implements IDoc {
 
     public String category() {
         return category;
-    }
-
-    @Override
-    public DocType type() {
-        return DocType.Kemik42bin;
     }
 
 }

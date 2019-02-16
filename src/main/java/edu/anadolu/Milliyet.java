@@ -16,7 +16,7 @@ public class Milliyet implements IDoc {
     private String text;
     private String id;
 
-     Milliyet(Path p) {
+    Milliyet(Path p) {
 
         try {
             byte[] encoded = Files.readAllBytes(p);
@@ -31,7 +31,10 @@ public class Milliyet implements IDoc {
     }
 
     public String content() {
-        return (title + " " + text).replaceAll("\u2019","'");
+        return (title + " " + text)
+                .replaceAll("\u2019", "'")
+                .replaceAll("\\s+", " ")
+                .trim();
     }
 
     public String id() {
@@ -76,11 +79,6 @@ public class Milliyet implements IDoc {
 
         throw new RuntimeException("cannot resolve " + t);
 
-    }
-
-    @Override
-    public DocType type() {
-        return DocType.Milliyet405bin;
     }
 
 }
