@@ -30,16 +30,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
-import static edu.anadolu.App.categories;
+import static edu.anadolu.Factory.categories;
 
-/**
- * <code>ListCompoundWords</code> class extracts the top n most frequent terms
- * (by document frequency) from an existing Lucene index and reports their
- * document frequency.
- * <p>
- * If the -t flag is given, both document frequency and total tf (total
- * number of occurrences) are reported, ordered by descending total tf.
- */
 public class ListCompoundWords {
 
 
@@ -59,7 +51,7 @@ public class ListCompoundWords {
         }
     }
 
-    public static void list(DocType type) throws Exception {
+    private static void list(DocType type) throws Exception {
 
         TermStats[] terms = highFreqTerms(10000000, new DocFreqComparator(), type);
 
@@ -134,7 +126,7 @@ public class ListCompoundWords {
     /**
      * Returns TermStats[] ordered by the specified comparator
      */
-    public static TermStats[] getHighFreqTerms(IndexReader reader, int numTerms, String field, Comparator<TermStats> comparator) throws Exception {
+    private static TermStats[] getHighFreqTerms(IndexReader reader, int numTerms, String field, Comparator<TermStats> comparator) throws Exception {
         TermStatsQueue tiq;
 
         if (field != null) {

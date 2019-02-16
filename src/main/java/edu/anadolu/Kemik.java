@@ -12,7 +12,7 @@ public class Kemik implements IDoc {
     private String category;
     private String id;
 
-    public Kemik(Path p) {
+    Kemik(Path p) {
 
         try {
             category = p.getParent().getFileName().toString();
@@ -26,7 +26,7 @@ public class Kemik implements IDoc {
                 if (line.length() == 0) continue;
                 builder.append(line).append("\n");
             }
-            this.content = builder.toString().trim();
+            this.content = builder.toString().trim().replaceAll("\u2019", "'");
 
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);

@@ -20,7 +20,8 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
-import static edu.anadolu.IndexCompoundWords.analyzerWrapper;
+import static edu.anadolu.Analyzers.analyzerWrapper;
+import static edu.anadolu.Factory.*;
 
 public class App {
 
@@ -35,7 +36,7 @@ public class App {
     }
 
 
-    public static void arrf(DocType type) throws Exception {
+    private static void arrf(DocType type) throws Exception {
 
         Stream<Path> stream = Files.find(Paths.get(repo(type)), 3, matcher);
 
@@ -85,46 +86,8 @@ public class App {
 
     };
 
-    private static String repo(DocType type) {
-        switch (type) {
-            case Milliyet405bin:
-                return "/Users/iorixxx/Documents/MilliyetCollectionZipFiles";
-            case TTC3600:
-                return "/Users/iorixxx/Desktop/TTC-3600-master/TTC-3600_Orj";
-            case Kemik42bin:
-                return "/Users/iorixxx/Downloads/42bin_haber/news";
-            default:
-                throw new AssertionError(type);
-        }
-    }
 
-    private static IDoc factory(DocType type, Path p) {
-        switch (type) {
-            case Milliyet405bin:
-                return new Milliyet(p);
-            case TTC3600:
-                return new TTC3600(p);
-            case Kemik42bin:
-                return new Kemik(p);
-            default:
-                throw new AssertionError(type);
-        }
-    }
-
-    static String[] categories(DocType type) {
-        switch (type) {
-            case Milliyet405bin:
-                return Milliyet.categories;
-            case TTC3600:
-                return TTC3600.categories;
-            case Kemik42bin:
-                return Kemik.categories;
-            default:
-                throw new AssertionError(type);
-        }
-    }
-
-    static void index(DocType type) throws IOException {
+    private static void index(DocType type) throws IOException {
 
         Directory dir = FSDirectory.open(Paths.get(type.toString()));
         IndexWriterConfig iwc = new IndexWriterConfig(analyzerWrapper());

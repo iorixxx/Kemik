@@ -16,7 +16,7 @@ public class Milliyet implements IDoc {
     private String text;
     private String id;
 
-    public Milliyet(Path p) {
+     Milliyet(Path p) {
 
         try {
             byte[] encoded = Files.readAllBytes(p);
@@ -31,7 +31,7 @@ public class Milliyet implements IDoc {
     }
 
     public String content() {
-        return title + " " + text;
+        return (title + " " + text).replaceAll("\u2019","'");
     }
 
     public String id() {

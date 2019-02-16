@@ -6,7 +6,7 @@ public class TTC3600 extends Kemik {
 
     static final String[] categories = new String[]{"spor", "ekonomi", "kultursanat", "saglik", "teknoloji", "siyaset"};
 
-    public TTC3600(Path p) {
+    TTC3600(Path p) {
         super(p);
     }
 
