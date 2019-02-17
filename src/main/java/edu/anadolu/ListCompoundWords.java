@@ -92,7 +92,6 @@ public class ListCompoundWords {
             if (mergedStat.docFreq() == 0) continue;
 
             out.print(String.join("_", parts));
-            System.out.println(String.join("_", parts));
 
             for (String s : parts) {
                 Term part = new Term("plain", s);
