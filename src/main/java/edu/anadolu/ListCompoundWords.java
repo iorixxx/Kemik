@@ -29,11 +29,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Comparator;
+import java.util.regex.Pattern;
 
 import static edu.anadolu.Factory.categories;
 
 public class ListCompoundWords {
 
+    public static final Pattern whiteSpaceSplitter = Pattern.compile("\\s+");
 
     private static TermStatistics[] highFreqTerms(int numTerms, Comparator<TermStatistics> comparator, DocType type) throws Exception {
 
@@ -49,6 +51,13 @@ public class ListCompoundWords {
         for (DocType type : DocType.values()) {
             list(type);
         }
+    }
+
+    private static void write(PrintWriter out, TermStatistics stat) {
+        out.print("\t");
+        out.print(stat.totalTermFreq());
+        out.print("\t");
+        out.print(stat.docFreq());
     }
 
     private static void list(DocType type) throws Exception {
@@ -69,7 +78,7 @@ public class ListCompoundWords {
 
             Term t = new Term("plain", merged);
 
-            TermStatistics termStatistics = searcher.termStatistics(t, TermContext.build(reader.getContext(), t));
+            TermStatistics mergedStat = searcher.termStatistics(t, TermContext.build(reader.getContext(), t));
 
           /*
             Query query = new TermQuery(t);
@@ -77,10 +86,23 @@ public class ListCompoundWords {
             int df = searcher.count(bq);
             */
 
-            if (termStatistics.docFreq() == 0) continue;
+            if (mergedStat.docFreq() == 0) continue;
 
-            out.println(term.term().utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq() + "\t" + term.docFreq() + "\t" + termStatistics.totalTermFreq() + "\t" + termStatistics.docFreq());
+            String[] parts = whiteSpaceSplitter.split(term.term().utf8ToString());
+            out.print(String.join("_", parts));
 
+            for (String s : parts) {
+                Term part = new Term("plain", s);
+                TermStatistics stat = searcher.termStatistics(part, TermContext.build(reader.getContext(), part));
+                write(out, stat);
+            }
+
+            write(out, term);
+            write(out, mergedStat);
+            // out.print(term.term().utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq() + "\t" + term.docFreq() + "\t" + mergedStat.totalTermFreq() + "\t" + mergedStat.docFreq());
+
+            out.println();
+            out.flush();
         }
 
         out.flush();
