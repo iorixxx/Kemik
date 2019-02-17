@@ -49,6 +49,7 @@ public class ListCompoundWords {
     public static void main(String[] args) throws Exception {
 
         for (DocType type : DocType.values()) {
+            System.out.println("processing " + type);
             list(type);
         }
     }
@@ -73,7 +74,9 @@ public class ListCompoundWords {
 
         for (TermStatistics term : terms) {
 
-            String merged = term.term().utf8ToString().replaceAll(" ", "");
+            String[] parts = whiteSpaceSplitter.split(term.term().utf8ToString());
+            String merged = String.join("", parts);
+
             if (isNumeric(merged)) continue;
 
             Term t = new Term("plain", merged);
@@ -88,8 +91,8 @@ public class ListCompoundWords {
 
             if (mergedStat.docFreq() == 0) continue;
 
-            String[] parts = whiteSpaceSplitter.split(term.term().utf8ToString());
             out.print(String.join("_", parts));
+            System.out.println(String.join("_", parts));
 
             for (String s : parts) {
                 Term part = new Term("plain", s);
@@ -102,7 +105,6 @@ public class ListCompoundWords {
             // out.print(term.term().utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq() + "\t" + term.docFreq() + "\t" + mergedStat.totalTermFreq() + "\t" + mergedStat.docFreq());
 
             out.println();
-            out.flush();
         }
 
         out.flush();
@@ -116,7 +118,8 @@ public class ListCompoundWords {
             for (TermStatistics term : terms) {
 
 
-                String merged = term.term().utf8ToString().replaceAll(" ", "");
+                String[] parts = whiteSpaceSplitter.split(term.term().utf8ToString());
+                String merged = String.join("", parts);
 
                 if (isNumeric(merged)) continue;
                 Query query = new TermQuery(new Term("plain", merged));
@@ -130,7 +133,11 @@ public class ListCompoundWords {
 
                 if (docFreq == 0) continue;
 
-                out.println(term.term().utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq() + "\t" + term.docFreq() + "\t" + docFreq);
+                out.print(String.join("_", parts));
+                write(out, term);
+                out.print("\t");
+                out.print(docFreq);
+                out.println();
 
             }
 
@@ -238,7 +245,7 @@ public class ListCompoundWords {
         void fill(TermsEnum termsEnum) throws IOException {
             BytesRef term;
             while ((term = termsEnum.next()) != null) {
-                insertWithOverflow(new TermStatistics(term, termsEnum.docFreq(), termsEnum.totalTermFreq()));
+                insertWithOverflow(new TermStatistics(BytesRef.deepCopyOf(term), termsEnum.docFreq(), termsEnum.totalTermFreq()));
             }
         }
     }
