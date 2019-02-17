@@ -70,17 +70,20 @@ public class ListCompoundWords {
         IndexSearcher searcher = new IndexSearcher(reader);
 
         PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), type.toString() + ".txt"), StandardCharsets.UTF_8));
+        out.println("compound\ttf1\tdf1\ttf2\tdf2\ttfa\tdfa\ttfb\tdfb");
 
 
         for (TermStatistics term : terms) {
 
             String[] parts = whiteSpaceSplitter.split(term.term().utf8ToString());
-            String merged = String.join("", parts);
 
+            // work with only two terms for now
+            if (parts.length != 2) continue;
+
+            String merged = String.join("", parts);
             if (isNumeric(merged)) continue;
 
             Term t = new Term("plain", merged);
-
             TermStatistics mergedStat = searcher.termStatistics(t, TermContext.build(reader.getContext(), t));
 
           /*
