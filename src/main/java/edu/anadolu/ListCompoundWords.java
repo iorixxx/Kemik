@@ -35,10 +35,10 @@ import static edu.anadolu.Factory.categories;
 public class ListCompoundWords {
 
 
-    private static TermStats[] highFreqTerms(int numTerms, Comparator<TermStats> comparator, DocType type) throws Exception {
+    private static TermStatistics[] highFreqTerms(int numTerms, Comparator<TermStatistics> comparator, DocType type) throws Exception {
 
         IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(type.toString())));
-        TermStats[] terms = getHighFreqTerms(reader, numTerms, "shingle", comparator);
+        TermStatistics[] terms = getHighFreqTerms(reader, numTerms, "shingle", comparator);
         reader.close();
 
         return terms;
@@ -53,29 +53,33 @@ public class ListCompoundWords {
 
     private static void list(DocType type) throws Exception {
 
-        TermStats[] terms = highFreqTerms(10000000, new DocFreqComparator(), type);
+        TermStatistics[] terms = highFreqTerms(10000000, new DocFreqComparator(), type);
 
         IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(type.toString())));
 
         IndexSearcher searcher = new IndexSearcher(reader);
 
-
         PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), type.toString() + ".txt"), StandardCharsets.UTF_8));
 
 
-        for (TermStats term : terms) {
+        for (TermStatistics term : terms) {
 
-            String merged = term.termtext.utf8ToString().replaceAll(" ", "");
+            String merged = term.term().utf8ToString().replaceAll(" ", "");
             if (isNumeric(merged)) continue;
-            Query query = new TermQuery(new Term("plain", merged));
 
+            Term t = new Term("plain", merged);
+
+            TermStatistics termStatistics = searcher.termStatistics(t, TermContext.build(reader.getContext(), t));
+
+          /*
+            Query query = new TermQuery(t);
             BooleanQuery bq = new BooleanQuery.Builder().add(query, BooleanClause.Occur.MUST).build();
+            int df = searcher.count(bq);
+            */
 
-            int count = searcher.count(bq);
+            if (termStatistics.docFreq() == 0) continue;
 
-            if (count == 0) continue;
-
-            out.println(term.termtext.utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq + "\t" + term.docFreq + "\t" + count);
+            out.println(term.term().utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq() + "\t" + term.docFreq() + "\t" + termStatistics.totalTermFreq() + "\t" + termStatistics.docFreq());
 
         }
 
@@ -87,10 +91,10 @@ public class ListCompoundWords {
             out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), category + ".txt"), StandardCharsets.UTF_8));
 
             final Query filter = new TermQuery(new Term("category", category));
-            for (TermStats term : terms) {
+            for (TermStatistics term : terms) {
 
 
-                String merged = term.termtext.utf8ToString().replaceAll(" ", "");
+                String merged = term.term().utf8ToString().replaceAll(" ", "");
 
                 if (isNumeric(merged)) continue;
                 Query query = new TermQuery(new Term("plain", merged));
@@ -100,11 +104,11 @@ public class ListCompoundWords {
                         .add(filter, BooleanClause.Occur.FILTER)
                         .build();
 
-                int count = searcher.count(bq);
+                int docFreq = searcher.count(bq);
 
-                if (count == 0) continue;
+                if (docFreq == 0) continue;
 
-                out.println(term.termtext.utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq + "\t" + term.docFreq + "\t" + count);
+                out.println(term.term().utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq() + "\t" + term.docFreq() + "\t" + docFreq);
 
             }
 
@@ -126,7 +130,7 @@ public class ListCompoundWords {
     /**
      * Returns TermStats[] ordered by the specified comparator
      */
-    private static TermStats[] getHighFreqTerms(IndexReader reader, int numTerms, String field, Comparator<TermStats> comparator) throws Exception {
+    private static TermStatistics[] getHighFreqTerms(IndexReader reader, int numTerms, String field, Comparator<TermStatistics> comparator) throws Exception {
         TermStatsQueue tiq;
 
         if (field != null) {
@@ -137,7 +141,7 @@ public class ListCompoundWords {
 
             TermsEnum termsEnum = terms.iterator();
             tiq = new TermStatsQueue(numTerms, comparator);
-            tiq.fill(field, termsEnum);
+            tiq.fill(termsEnum);
         } else {
             Fields fields = MultiFields.getFields(reader);
             if (fields.size() == 0) {
@@ -147,12 +151,12 @@ public class ListCompoundWords {
             for (String fieldName : fields) {
                 Terms terms = fields.terms(fieldName);
                 if (terms != null) {
-                    tiq.fill(fieldName, terms.iterator());
+                    tiq.fill(terms.iterator());
                 }
             }
         }
 
-        TermStats[] result = new TermStats[tiq.size()];
+        TermStatistics[] result = new TermStatistics[tiq.size()];
         // we want highest first so we read the queue and populate the array
         // starting at the end and work backwards
         int count = tiq.size() - 1;
@@ -166,16 +170,13 @@ public class ListCompoundWords {
     /**
      * Compares terms by docTermFreq
      */
-    public static final class DocFreqComparator implements Comparator<TermStats> {
+    public static final class DocFreqComparator implements Comparator<TermStatistics> {
 
         @Override
-        public int compare(TermStats a, TermStats b) {
-            int res = Long.compare(a.docFreq, b.docFreq);
+        public int compare(TermStatistics a, TermStatistics b) {
+            int res = Long.compare(a.docFreq(), b.docFreq());
             if (res == 0) {
-                res = a.field.compareTo(b.field);
-                if (res == 0) {
-                    res = a.termtext.compareTo(b.termtext);
-                }
+                res = a.term().compareTo(b.term());
             }
             return res;
         }
@@ -184,16 +185,13 @@ public class ListCompoundWords {
     /**
      * Compares terms by totalTermFreq
      */
-    public static final class TotalTermFreqComparator implements Comparator<TermStats> {
+    public static final class TotalTermFreqComparator implements Comparator<TermStatistics> {
 
         @Override
-        public int compare(TermStats a, TermStats b) {
-            int res = Long.compare(a.totalTermFreq, b.totalTermFreq);
+        public int compare(TermStatistics a, TermStatistics b) {
+            int res = Long.compare(a.totalTermFreq(), b.totalTermFreq());
             if (res == 0) {
-                res = a.field.compareTo(b.field);
-                if (res == 0) {
-                    res = a.termtext.compareTo(b.termtext);
-                }
+                res = a.term().compareTo(b.term());
             }
             return res;
         }
@@ -202,23 +200,23 @@ public class ListCompoundWords {
     /**
      * Priority queue for TermStats objects
      **/
-    static final class TermStatsQueue extends PriorityQueue<TermStats> {
-        final Comparator<TermStats> comparator;
+    static final class TermStatsQueue extends PriorityQueue<TermStatistics> {
+        final Comparator<TermStatistics> comparator;
 
-        TermStatsQueue(int size, Comparator<TermStats> comparator) {
+        TermStatsQueue(int size, Comparator<TermStatistics> comparator) {
             super(size);
             this.comparator = comparator;
         }
 
         @Override
-        protected boolean lessThan(TermStats termInfoA, TermStats termInfoB) {
+        protected boolean lessThan(TermStatistics termInfoA, TermStatistics termInfoB) {
             return comparator.compare(termInfoA, termInfoB) < 0;
         }
 
-        void fill(String field, TermsEnum termsEnum) throws IOException {
+        void fill(TermsEnum termsEnum) throws IOException {
             BytesRef term;
             while ((term = termsEnum.next()) != null) {
-                insertWithOverflow(new TermStats(field, term, termsEnum.docFreq(), termsEnum.totalTermFreq()));
+                insertWithOverflow(new TermStatistics(term, termsEnum.docFreq(), termsEnum.totalTermFreq()));
             }
         }
     }
