@@ -70,7 +70,7 @@ public class ListCompoundWords {
         IndexSearcher searcher = new IndexSearcher(reader);
 
         PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), type.toString() + ".txt"), StandardCharsets.UTF_8));
-        out.println("compound\ttf1\tdf1\ttf2\tdf2\ttfa\tdfa\ttfb\tdfb");
+        out.println("compound\ttf1\tdf1\ttf2\tdf2\ttfa\tdfa\ttfb\tdfb\tlen1\tlen2");
 
 
         for (TermStatistics term : terms) {
@@ -104,6 +104,12 @@ public class ListCompoundWords {
 
             write(out, term);
             write(out, mergedStat);
+
+            // include length of words for filtering purposes (e.g. filter words whose length is less than 3).
+            out.print("\t");
+            out.print(parts[0].length());
+            out.print("\t");
+            out.print(parts[1].length());
             // out.print(term.term().utf8ToString().replaceAll(" ", "_") + "\t" + term.totalTermFreq() + "\t" + term.docFreq() + "\t" + mergedStat.totalTermFreq() + "\t" + mergedStat.docFreq());
 
             out.println();
