@@ -6,15 +6,17 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 
 public class Milliyet implements IDoc {
 
     static final String[] categories = new String[]{"yasam", "siyaset", "yazar", "spor", "magazin", "dunya", "ekonomi", "guncel"};
 
-    private String title;
-    private String url;
-    private String text;
-    private String id;
+    static final Locale tr = Locale.forLanguageTag("tr-TR");
+
+    private final String url;
+    private final String id;
+    private final String content;
 
     Milliyet(Path p) {
 
@@ -23,18 +25,16 @@ public class Milliyet implements IDoc {
             String s = new String(encoded, StandardCharsets.UTF_8);
             id = StringUtils.substringBetween(s, "<DOCNO>", "</DOCNO>").trim();
             url = StringUtils.substringBetween(s, "<URL>", "</URL>").trim();
-            title = StringUtils.substringBetween(s, "<HEADLINE>", "</HEADLINE>").trim();
-            text = StringUtils.substringBetween(s, "<TEXT>", "</TEXT>").trim();
+            String title = StringUtils.substringBetween(s, "<HEADLINE>", "</HEADLINE>").trim();
+            String text = StringUtils.substringBetween(s, "<TEXT>", "</TEXT>").trim();
+            content = normalize(title + " " + text).toLowerCase(tr);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
     }
 
     public String content() {
-        return (title + " " + text)
-                .replaceAll("\u2019", "'")
-                .replaceAll("\\s+", " ")
-                .trim();
+        return content;
     }
 
     public String id() {

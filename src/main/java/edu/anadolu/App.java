@@ -60,10 +60,12 @@ public class App {
             int count = categories.getOrDefault(category, 0);
             categories.put(category, ++count);
 
-            if (!("astro".equals(category) || "tv".equals(category) || "sanat".equals(category))) {
-                String content = weka.core.Utils.quote(iDoc.content().trim());
-                fileStream.println(category + "," + content);
+            if (DocType.Milliyet405bin.equals(type) && ("astro".equals(category) || "tv".equals(category) || "sanat".equals(category))) {
+                return;
             }
+
+            String content = weka.core.Utils.quote(iDoc.content().trim());
+            fileStream.println(category + "," + content);
 
         });
 
@@ -102,10 +104,15 @@ public class App {
 
             IDoc iDoc = factory(type, p);
 
+            String category = iDoc.category();
+            if (DocType.Milliyet405bin.equals(type) && ("astro".equals(category) || "tv".equals(category) || "sanat".equals(category))) {
+                return;
+            }
+
             Document doc = new Document();
 
             doc.add(new StringField("id", iDoc.id(), Field.Store.YES));
-            doc.add(new StringField("category", iDoc.category(), Field.Store.YES));
+            doc.add(new StringField("category", category, Field.Store.YES));
 
             String content = iDoc.content();
 

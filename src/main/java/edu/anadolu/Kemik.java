@@ -5,13 +5,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static edu.anadolu.Milliyet.tr;
+
 public class Kemik implements IDoc {
 
     static final String[] categories = new String[]{"dunya", "guncel", "planet", "spor", "yasam", "ekonomi", "kultur-sanat", "saglik", "teknoloji", "genel", "magazin", "siyaset", "turkiye"};
 
-    private String content;
-    private String category;
-    private String id;
+    private final String content;
+    private final String category;
+    private final String id;
 
     Kemik(Path p) {
 
@@ -20,10 +22,7 @@ public class Kemik implements IDoc {
             String pk = category + "_" + p.getFileName();
             id = pk.substring(0, pk.length() - 4);
             byte[] encoded = Files.readAllBytes(p);
-            this.content = new String(encoded, StandardCharsets.UTF_8)
-                    .replaceAll("\u2019", "'")
-                    .replaceAll("\\s+", " ")
-                    .trim();
+            content = normalize(new String(encoded, StandardCharsets.UTF_8)).toLowerCase(tr);
 
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
