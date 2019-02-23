@@ -178,7 +178,7 @@ public class App {
         try {
             writer.commit();
             writer.forceMerge(1);
-            numDocs = writer.numDocs();
+            numDocs = writer.getDocStats().numDocs;
         } finally {
             writer.close();
         }
