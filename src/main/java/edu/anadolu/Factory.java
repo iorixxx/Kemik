@@ -15,17 +15,8 @@ class Factory {
 
         if (properties != null && properties.getProperty(type.name()) != null)
             return properties.getProperty(type.name());
-
-        switch (type) {
-            case Milliyet405bin:
-                return "/Users/iorixxx/Documents/MilliyetCollectionZipFiles";
-            case TTC3600:
-                return "/Users/iorixxx/Desktop/TTC-3600-master/TTC-3600_Orj";
-            case Kemik42bin:
-                return "/Users/iorixxx/Downloads/42bin_haber/news";
-            default:
-                throw new AssertionError(type);
-        }
+        else
+            throw new AssertionError(type);
     }
 
     static IDoc factory(DocType type, Path p) {
@@ -36,6 +27,10 @@ class Factory {
                 return new TTC3600(p);
             case Kemik42bin:
                 return new Kemik(p);
+            case TRT:
+                return new TRT(p);
+            case MIL:
+                return new MIL(p);
             default:
                 throw new AssertionError(type);
         }
@@ -49,6 +44,10 @@ class Factory {
                 return TTC3600.categories;
             case Kemik42bin:
                 return Kemik.categories;
+            case TRT:
+                return TRT.categories;
+            case MIL:
+                return MIL.categories;
             default:
                 throw new AssertionError(type);
         }

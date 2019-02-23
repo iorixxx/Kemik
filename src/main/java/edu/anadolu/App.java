@@ -10,7 +10,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +30,7 @@ public class App {
 
         for (DocType type : DocType.values()) {
             arrf(type);
+            analyzedArrf(type);
             index(type);
         }
     }
@@ -38,15 +40,15 @@ public class App {
 
         Stream<Path> stream = Files.find(Paths.get(repo(type)), 3, matcher);
 
-        PrintStream fileStream = new PrintStream(Files.newOutputStream(Paths.get(type.toString() + ".arff")));
+        PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString() + ".arff"), StandardCharsets.UTF_8));
 
-        fileStream.println("@RELATION " + type.toString());
+        out.println("@RELATION " + type.toString());
 
-        fileStream.println("@ATTRIBUTE class {" + String.join(",", categories(type)) + "}");
+        out.println("@ATTRIBUTE class {" + String.join(",", categories(type)) + "}");
 
-        fileStream.println("@ATTRIBUTE content string");
+        out.println("@ATTRIBUTE content string");
 
-        fileStream.println("@data");
+        out.println("@data");
 
 
         final Map<String, Integer> categories = new HashMap<>();
@@ -65,14 +67,54 @@ public class App {
             }
 
             String content = weka.core.Utils.quote(iDoc.content().trim());
-            fileStream.println(category + "," + content);
+            out.println(category + "," + content);
 
         });
 
-        fileStream.flush();
-        fileStream.close();
+        out.flush();
+        out.close();
         categories.entrySet().forEach(System.out::println);
 
+    }
+
+    private static void analyzedArrf(DocType type) throws Exception {
+
+        Stream<Path> stream = Files.find(Paths.get(repo(type)), 3, matcher);
+
+        PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString() + "_plain.arff"), StandardCharsets.UTF_8));
+
+        out.println("@RELATION " + type.toString() + "Plain");
+
+        out.println("@ATTRIBUTE class {" + String.join(",", categories(type)) + "}");
+
+        out.println("@ATTRIBUTE content string");
+
+        out.println("@data");
+
+
+        final Map<String, Integer> categories = new HashMap<>();
+
+        stream.forEach(p -> {
+
+            IDoc iDoc = factory(type, p);
+
+            String category = iDoc.category();
+
+            int count = categories.getOrDefault(category, 0);
+            categories.put(category, ++count);
+
+            if (DocType.Milliyet405bin.equals(type) && ("astro".equals(category) || "tv".equals(category) || "sanat".equals(category))) {
+                return;
+            }
+
+            String content = weka.core.Utils.quote(Analyzers.getAnalyzedString(iDoc.content(), Analyzers.plain()));
+            out.println(category + "," + content);
+
+        });
+
+        out.flush();
+        out.close();
+        categories.entrySet().forEach(System.out::println);
     }
 
 

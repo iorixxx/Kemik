@@ -14,6 +14,12 @@ public interface IDoc {
                 .replaceAll("\u02BC", "'")
                 .replaceAll("`", "'")
                 .replaceAll("´", "'")
+
+                .replaceAll("&rsquo;", "'")
+                .replaceAll("&quot;", "\"")
+                .replaceAll("&nbsp;", " ")
+                .replaceAll("&#226;", "a")
+
                 .replaceAll("\\s+", " ")
                 .trim();
     }

@@ -1,0 +1,27 @@
+# Fix frequently misspelled words in Turkish using stemming override filter
+hıristiyan	hristiyan
+ıstanbul	istanbul
+ıstambul	istanbul
+fiat	fiyat
+yunanlı	yunan
+tekrardan	tekrar
+cimnastik	jimnastik
+hintli	hint
+evraklar	evrak
+penbe	pembe
+makina	makine
+psikiyatrist	psikiyatr
+orjinal	orijinal
+kurdela	kurdele
+kordale	kurdele
+kurdale	kurdele
+labaratuar	laboratuvar
+labaratuvar	laboratuvar
+labaratuvar	laboratuvar
+meyva	meyve
+muaffak	muvaffak
+parende	perende
+provakatör	provokatör
+radyosyon	radyasyon
+salomanje	salamanje
+salomance	salamanje

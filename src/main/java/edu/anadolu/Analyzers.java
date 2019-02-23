@@ -2,7 +2,6 @@ package edu.anadolu;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.compound.DictionaryCompoundWordTokenFilterFactory;
 import org.apache.lucene.analysis.core.FlattenGraphFilterFactory;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
@@ -19,12 +18,16 @@ import java.util.Map;
 
 class Analyzers {
 
-    private static Analyzer plain() throws IOException {
-        return CustomAnalyzer.builder()
-                .withTokenizer("standard")
-                //  .addTokenFilter("apostrophe")
-                .addTokenFilter("turkishlowercase")
-                .build();
+    static Analyzer plain() {
+        try {
+            return CustomAnalyzer.builder()
+                    .withTokenizer("standard")
+                    //  .addTokenFilter("apostrophe")
+                    .addTokenFilter("turkishlowercase")
+                    .build();
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
     }
 
     private static Analyzer shingle() throws IOException {
@@ -52,7 +55,7 @@ class Analyzers {
         return CustomAnalyzer.builder()
                 .withTokenizer("standard")
                 .addTokenFilter("turkishlowercase")
-                .addTokenFilter(DictionaryCompoundWordTokenFilterFactory.class, "dictionary", "dictionary.txt")
+                .addTokenFilter("DictionaryCompoundWord", "dictionary", "dictionary.txt")
                 .build();
     }
 
@@ -61,6 +64,14 @@ class Analyzers {
                 .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt", "decompose", Boolean.toString(decompose))
                 .withTokenizer("standard")
                 .addTokenFilter("turkishlowercase")
+                .build();
+    }
+
+    private static Analyzer typo() throws IOException {
+        return CustomAnalyzer.builder()
+                .withTokenizer("standard")
+                .addTokenFilter("turkishlowercase")
+                .addTokenFilter("stemmeroverride", "dictionary", "typo_override.txt")
                 .build();
     }
 
@@ -88,6 +99,30 @@ class Analyzers {
         return list;
     }
 
+    static String getAnalyzedString(String text, Analyzer analyzer) {
+
+        final StringBuilder builder = new StringBuilder();
+
+        try (TokenStream ts = analyzer.tokenStream("content", new StringReader(text))) {
+
+            final CharTermAttribute termAtt = ts.addAttribute(CharTermAttribute.class);
+
+            final TypeAttribute typeAtt = ts.addAttribute(TypeAttribute.class);
+            ts.reset(); // Resets this stream to the beginning. (Required)
+            while (ts.incrementToken()) {
+                builder.append(termAtt.buffer(), 0, termAtt.length());
+                builder.append(' ');
+            }
+
+            ts.end();   // Perform end-of-stream operations, e.g. set the final offset.
+        } catch (IOException ioe) {
+            throw new RuntimeException("happened during string analysis", ioe);
+        }
+
+
+        return builder.toString().trim();
+    }
+
     public static void main(String[] args) throws IOException {
 
         String text = "masaüstü newyork catwalk hamamböceği";
@@ -96,7 +131,11 @@ class Analyzers {
 
         text = "masa üstü new york cat walk hamam böceği";
 
-        getAnalyzedTokens(text, decompose(false));
+        System.out.println(getAnalyzedString(text, decompose(false)));
+
+        text = "yunanlı orjinal cimnastik yapmışlar";
+
+        System.out.println(getAnalyzedString(text, typo()));
 
     }
 }
