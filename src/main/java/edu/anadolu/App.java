@@ -29,6 +29,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         for (DocType type : DocType.values()) {
+            System.out.println("processing " + type);
             arrf(type);
             analyzedArrf(type);
             index(type);
@@ -92,16 +93,10 @@ public class App {
         out.println("@data");
 
 
-        final Map<String, Integer> categories = new HashMap<>();
-
         stream.forEach(p -> {
 
             IDoc iDoc = factory(type, p);
-
             String category = iDoc.category();
-
-            int count = categories.getOrDefault(category, 0);
-            categories.put(category, ++count);
 
             if (DocType.Milliyet405bin.equals(type) && ("astro".equals(category) || "tv".equals(category) || "sanat".equals(category))) {
                 return;
@@ -114,7 +109,7 @@ public class App {
 
         out.flush();
         out.close();
-        categories.entrySet().forEach(System.out::println);
+
     }
 
 
