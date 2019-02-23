@@ -1,5 +1,6 @@
 package edu.anadolu;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -30,14 +31,19 @@ public class App {
 
         for (DocType type : DocType.values()) {
             System.out.println("processing " + type);
-            arrf(type);
-            analyzedArrf(type);
+            arff(type);
+            analyzedARFF(type, Analyzers.plain(), "_plain");
+            analyzedARFF(type, Analyzers.decompose(false), "_birlesik");
+            analyzedARFF(type, Analyzers.decompose(true), "_ayrik");
             index(type);
         }
     }
 
 
-    private static void arrf(DocType type) throws Exception {
+    /**
+     * An ARFF (Attribute-Relation File Format) file is an ASCII text file that describes a list of instances sharing a set of attributes.
+     */
+    private static void arff(DocType type) throws Exception {
 
         Stream<Path> stream = Files.find(Paths.get(repo(type)), 3, matcher);
 
@@ -68,7 +74,9 @@ public class App {
             }
 
             String content = weka.core.Utils.quote(iDoc.content().trim());
-            out.println(category + "," + content);
+            out.print(category);
+            out.print(",");
+            out.println(content);
 
         });
 
@@ -78,13 +86,13 @@ public class App {
 
     }
 
-    private static void analyzedArrf(DocType type) throws Exception {
+    private static void analyzedARFF(DocType type, Analyzer analyzer, String suffix) throws Exception {
 
         Stream<Path> stream = Files.find(Paths.get(repo(type)), 3, matcher);
 
-        PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString() + "_plain.arff"), StandardCharsets.UTF_8));
+        PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString() + suffix + ".arff"), StandardCharsets.UTF_8));
 
-        out.println("@RELATION " + type.toString() + "Plain");
+        out.println("@RELATION " + type.toString());
 
         out.println("@ATTRIBUTE class {" + String.join(",", categories(type)) + "}");
 
@@ -102,8 +110,10 @@ public class App {
                 return;
             }
 
-            String content = weka.core.Utils.quote(Analyzers.getAnalyzedString(iDoc.content(), Analyzers.plain()));
-            out.println(category + "," + content);
+            String content = weka.core.Utils.quote(Analyzers.getAnalyzedString(iDoc.content(), analyzer));
+            out.print(category);
+            out.print(",");
+            out.println(content);
 
         });
 

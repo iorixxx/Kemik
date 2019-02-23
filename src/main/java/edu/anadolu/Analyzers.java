@@ -18,16 +18,12 @@ import java.util.Map;
 
 class Analyzers {
 
-    static Analyzer plain() {
-        try {
-            return CustomAnalyzer.builder()
-                    .withTokenizer("standard")
-                    //  .addTokenFilter("apostrophe")
-                    .addTokenFilter("turkishlowercase")
-                    .build();
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
+    static Analyzer plain() throws IOException {
+        return CustomAnalyzer.builder()
+                .withTokenizer("standard")
+                //  .addTokenFilter("apostrophe")
+                .addTokenFilter("turkishlowercase")
+                .build();
     }
 
     private static Analyzer shingle() throws IOException {
@@ -59,7 +55,7 @@ class Analyzers {
                 .build();
     }
 
-    private static Analyzer decompose(boolean decompose) throws IOException {
+    static Analyzer decompose(boolean decompose) throws IOException {
         return CustomAnalyzer.builder()
                 .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt", "decompose", Boolean.toString(decompose))
                 .withTokenizer("standard")
