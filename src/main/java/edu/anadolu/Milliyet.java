@@ -27,7 +27,7 @@ public class Milliyet implements IDoc {
             url = StringUtils.substringBetween(s, "<URL>", "</URL>").trim();
             String title = StringUtils.substringBetween(s, "<HEADLINE>", "</HEADLINE>").trim();
             String text = StringUtils.substringBetween(s, "<TEXT>", "</TEXT>").trim();
-            content = normalize(title + " " + text).toLowerCase(tr);
+            content = normalize((title + " " + text).toLowerCase(tr));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

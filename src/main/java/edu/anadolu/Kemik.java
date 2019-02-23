@@ -22,7 +22,7 @@ public class Kemik implements IDoc {
             String pk = category + "_" + p.getFileName();
             id = pk.substring(0, pk.length() - 4);
             byte[] encoded = Files.readAllBytes(p);
-            content = normalize(new String(encoded, StandardCharsets.UTF_8)).toLowerCase(tr);
+            content = normalize(new String(encoded, StandardCharsets.UTF_8).toLowerCase(tr));
 
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
