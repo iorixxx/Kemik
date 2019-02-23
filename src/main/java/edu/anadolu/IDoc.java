@@ -35,6 +35,11 @@ public interface IDoc {
                 .replaceAll("&atilde;", "a")
                 .replaceAll("&mdash;", "-")
 
+                .replaceAll("&bull;", ".")
+                .replaceAll("&middot;", ".")
+                .replaceAll("&amp;", "&")
+
+
 
                 .replaceAll("\\s+", " ")
                 .trim();
