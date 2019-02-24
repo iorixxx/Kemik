@@ -17,6 +17,8 @@ public interface IDoc {
 
                 .replaceAll("&rsquo;", "'")
                 .replaceAll("&lsquo;", "'")
+                .replaceAll("&rdquo;", "\"")
+                .replaceAll("&ldquo;", "\"")
                 .replaceAll("&quot;", "\"")
                 .replaceAll("&nbsp;", " ")
                 .replaceAll("&#226;", "a")
