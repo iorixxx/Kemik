@@ -121,16 +121,17 @@ class Analyzers {
 
     public static void main(String[] args) throws IOException {
 
-        String text = "masaüstü newyork catwalk hamamböceği";
+        String text = "masaüstü newyork catwalk hamamböceği genel kurmay genelkurmay";
 
         getAnalyzedTokens(text, decompose(true));
 
-        text = "masa üstü new york cat walk hamam böceği";
+        System.out.println("------------------------");
+        text = "masa üstü new york cat walk hamam böceği genel kurmay genelkurmay";
 
         System.out.println(getAnalyzedString(text, decompose(false)));
 
         text = "yunanlı orjinal cimnastik yapmışlar";
-
+        System.out.println("------------------------");
         System.out.println(getAnalyzedString(text, typo()));
 
     }

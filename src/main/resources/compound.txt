@@ -778,3 +778,5 @@ tavuk_göğsü
 yaş_gününe
 sağ_olun
 oto_sansürü
+soy_kırım
+soy_kırımı
