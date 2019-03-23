@@ -1,4 +1,4 @@
-﻿# Meryem's crawl from http://www.tdk.gov.tr/index.php?option=com_yanlis&view=yanlis
+# Meryem's crawl from http://www.tdk.gov.tr/index.php?option=com_yanlis&view=yanlis
 acenta	acente
 acitasyon	ajitasyon
 acizane	naçizane
