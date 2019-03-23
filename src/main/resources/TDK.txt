@@ -1,16 +1,16 @@
-# Fix frequently misspelled words [1] in Turkish using stemming override filter
-# [1] http://www.tdk.gov.tr/index.php?option=com_yanlis&view=yanlis
+﻿# Meryem's crawl from http://www.tdk.gov.tr/index.php?option=com_yanlis&view=yanlis
 acenta	acente
 acitasyon	ajitasyon
 acizane	naçizane
-adele	adale
+adele   adale
 afaroz	aforoz
-Afganlı	Afgan
+#Afganlı	Afgan
+afganlı	afgan
 afilli	afili
 aferim	aferin
 ağostos	ağustos
 ahçı	aşçı
-ahlağın	ahlakın
+ahlağın ahlakın
 ahpab	ahbap
 akapunktur	akupunktur
 akrapol	akropol
@@ -26,17 +26,17 @@ Amarika	Amerika
 amartisör	amortisör
 anartar	anahtar
 anfi	amfi
-anlamamazlık	anlamazlık
-anotomi	anatomi
+anlamamazlık	anlamazlık 
+anotomi	anatomi 
 ansımak	anımsamak
 antiparantez	antrparantez
-antreman	antrenman
+antreman	antrenman                              
 aparatif	aperitif
 aperatif	aperitif
 aptes	abdest
 aporlor	hoparlör
-arabeks	arabesk
-ardarda	art arda
+arabeks	arabesk 
+ardarda	art arda 
 arefe	arife
 arozöz	arazöz
 artiz	artist
@@ -71,7 +71,7 @@ bilader	birader
 bilimum	bilumum
 bilmemezlik	bilmezlik
 biodizel	biyodizel
-birfiil	bilfiil
+birfiil	bilfiil 
 birhaber	bihaber
 bisküüt	bisküvi
 boğça	poğaça
@@ -81,17 +81,17 @@ canbaz	cambaz
 candarma	jandarma
 cenderme	jandarma
 celatin	jelatin
-ceryan	cereyan
+ceryan	cereyan 
 ceton	jeton
 cimnastik	jimnastik
 ciyer	ciğer
 çekinser	çekimser
-çiflik	çiftlik
+çiflik	çiftlik 
 çinakop	çinekop
 çoşku	coşku
 çukulata	çikolata
 çukolata	çikolata
-çünki	çünkü
+çünki	çünkü 
 dabruka	darbuka
 dakka	dakika
 dekarasyon	dekorasyon
@@ -100,7 +100,7 @@ deyer	değer
 deyil	değil
 deyinmek	değinmek
 deynek	değnek
--di'li geçmiş	belirli geçmiş
+#-di'li geçmiş	belirli geçmiş
 dinazor	dinozor
 direk	direkt
 dispirator	distribütör
@@ -110,9 +110,9 @@ doğma	dogma
 dokunmatik	dokunmalı
 döküman	doküman
 dökümanter	dokümanter
-döndermek	döndürmek
+döndermek	döndürmek 
 duymamazlık	duymazlık
-düyüm	düğüm
+düyüm	düğüm 
 aşentiyon	eşantiyon
 aşantiyon	eşantiyon
 egzantrik	eksantrik
@@ -122,19 +122,19 @@ egzos	egzoz
 egsoz	egzoz
 eksoz	egzoz
 egzost	egzoz
-eksozt	egzoz
+eksozt	egzoz                              
 Eğridir	Eğirdir
 ekistra	ekstra
 entellektüel	entelektüel
 entrasan	enteresan
-erezyon	erozyon
+erezyon	erozyon 
 erkan	erkân
 erzağı	erzakı
 eskirim	eskrim
 espiri	espri
-eşgal	eşkâl
+eşgal	eşkâl 
 eşkal	eşkâl
-eşortman	eşofman
+eşortman	eşofman 
 eşşek	eşek
 eşyalar	eşya
 evsane	efsane
@@ -150,43 +150,44 @@ fesetmek	feshetmek
 fiat	fiyat
 filim	film
 fites	vites
-fizik tedavisi	fizik tedavi
+#fizik tedavisi	fizik tedavi
 florasan	floresan
 fortmanto	portmanto
 fullemek	doldurmak
 gangaster	gangster
 gangren	kangren
 gardolap	gardırop
-gaste	gazete
+gaste	gazete 
 gazte	gazete
 gometri	geometri
 gömetri	geometri
 gol yapmak	gol atmak
-Gökân	Gökhan
+#Gökân	Gökhan
 görseller	görüntüler
 gravat	kravat
-Hakkari	Hakkâri
+#Hakkari	Hakkâri
 hakkaten	hakikaten
-halisinasyon	halüsinasyon
+halisinasyon	halüsinasyon 
 halisünasyon	halüsinasyon
-haremlik selamlık	harem selamlık
+#haremlik selamlık	harem selamlık
 harfiyat	hafriyat
-herıld	herhâlde
-herkez	herkes
+#herıld	herhâlde
+herıld	herhalde
+herkez	herkes 
 herkeş	herkes
 heycan	heyecan
 Hıristiyan	Hristiyan
 Hintli	Hint
 hoporlör	hoparlör
 hukuğun	hukukun
-ır	yır
+#ır	yır
 ıskonto	iskonto
 Istanbul	İstanbul
 İstambul	İstanbul
 ıstırap	ızdırap
 ıstırar	ıztırar
-içki kullanmak	içki içmek
-ilizyon	illüzyon
+#içki kullanmak	içki içmek
+ilizyon	illüzyon 
 ilüzyon	illüzyon
 inkilap	inkılap
 insiyatif	inisiyatif
@@ -202,55 +203,55 @@ karsör	karoser
 karisör	karoser
 kavaltı	kahvaltı
 kağıt	kâğıt
-kaideye almamak	kale almamak
+kaideye almamak	kale almamak 
 kakafoni	kakofoni
 kalemşör	kalemşor
 kanpanya	kampanya
 kaparo	kapora
 kapşon	kapüşon
 Karayca	Karaimce
-karegrafi	koreografi
+karegrafi	koreografi 
 kareografi	koreografi
 karekter	karakter
 karemel	karamel
 karnıbahar	karnabahar
 kavonoz	kavanoz
-kaysı	kayısı
+kaysı	kayısı 
 kendine iyi bak	kendine dikkat et
 keşki	keşke
 kırahathane	kıraathane
 kilot	külot
-kipri	kirpi
+kipri	kirpi 
 kiprik	kirpik
 kirbit	kibrit
 kitlemek	kilitlemek
 klavuz	kılavuz
 kokreç	kokoreç
 kokareç	kokoreç
-kolanya kolonya
-kollej kolej
+kolanya kolonya 
+kollej kolej 
 kolleksiyon	koleksiyon
 kollektif	kolektif
 komidin	komodin
 kominist	komünist
 komünükasyon	komünikasyon
 konsansüs	konsensüs
-kontür	kontör
+kontür	kontör 
 kontur	kontör
 kopye	kopya
 korkunç güzel	çok güzel
 kozmatik	kozmetik
 kurdela	kurdele
-kordale	kurdele
+kordale	kurdele 
 kurdale	kurdele
 küpür	kupür
 küvöz	kuvöz
 Levent	4. Levent
 layik	laik
-labaratuar	laboratuvar
-labaratuvar	laboratuvar
+labaratuar	laboratuvar 
+labaratuvar	laboratuvar 
 laboratuar	laboratuvar
-lağbo	lavabo
+lağbo	lavabo 
 lavobo	lavabo
 lakayt	lakayıt
 laylon	naylon
@@ -270,7 +271,7 @@ mazohist	mazoşist
 mazohizm	mazoşizm
 mazurat	maruzat
 mefta	mevta
-megoloman	megaloman
+megoloman	megaloman 
 megolaman	megaloman
 mekânizma	mekanizma
 melemen	menemen
@@ -283,10 +284,10 @@ meraba	merhaba
 merağını	merakını
 meslekdaş	meslektaş
 mevlüt	mevlut
-meyva	meyve
+meyva	meyve 
 miğde	mide
 mokasen	makosen
-motorsiklet	motosiklet
+motorsiklet	motosiklet 
 mozayik	mozaik
 mönü	menü
 muacir	muhacir
@@ -298,8 +299,8 @@ muzur	muzır
 müdahele	müdahale
 münübüs	minibüs
 müracat	müracaat
-mürettebatlar	mürettebat
-mürüvet	mürüvvet
+mürettebatlar	mürettebat 
+mürüvet	mürüvvet 
 mürivet	mürüvvet
 müsayit	müsait
 müsbet	müspet
@@ -326,7 +327,7 @@ orjinal	orijinal
 Osmanlıca	Osmanlı Türkçesi
 öğe	öge
 ötenazi	ötanazi
-öyle	öğle
+öyle	öğle 
 palyanço	palyaço
 panaroma	panorama
 panik oldum	paniğe kapılmak
@@ -345,18 +346,18 @@ penbe	pembe
 personeller	personel
 peştemal	peştamal
 pisiklet	bisiklet
-poaça	poğaça
+poaça	poğaça 
 poça	poğaça
 profütür	profiterol
-prolüfütür	profiterol
+prolüfütür	profiterol 
 profütürül	profiterol
-proğram	program
+proğram	program 
 prooram	program
 proleterya	proletary
 promasyon	promosyon
 provakatör	provokatör
 psikiyatrist	psikiyatr
-pisküüt	bisküvi
+pisküüt	bisküvi  
 pisküvi	bisküvi
 püsküvüt	bisküvi
 radyosyon	radyasyon
@@ -397,7 +398,7 @@ statyum	stadyum
 steteskop	stetoskop
 su basmanı	subasman
 subap	supap
-supab	supap
+supab	supap 
 sibop	supap
 sueter	süveter
 südyen	sütyen
@@ -415,7 +416,7 @@ sütüdyo	stüdyo
 şindi	şimdi
 şohben	şofben
 şok olmak	şoke olmak
-şöför	şoför
+şöför	şoför 
 tadilatlat	tadilat
 tahüt	taahüt
 tamüden	taamüden
@@ -454,14 +455,14 @@ tribuşon	tirbuşon
 tirbüşon	tirbuşon
 tükrük	tükürük
 uydurmasyon	uydurma
-ukele	ukala
+ukele	ukala 
 ukela	ukala
 ultrasyon	ultrason
 ultümaton	ültimatom
 ultimatom	ültimatom
 usül	usul
 uydurmasyon	uydurma
-ünvan	unvan
+ünvan	unvan 
 üvertür	uvertür
 üzre	üzere
 valeybol	voleybol
@@ -475,7 +476,7 @@ vürüs	virüs
 yakinimdir	yakınımdır
 yanlız	yalnız
 yannız	yalnız
-yannış	yanlış
+yannış	yanlış 
 yalnış	yanlış
 yaprak dolması	sarma
 yayınlamak	yayımlamak
@@ -529,6 +530,7 @@ Zülfikâr	Zülfikar
 
 
 
+ 
 
 
 
@@ -596,8 +598,7 @@ Zülfikâr	Zülfikar
 
 
 
-
-
+ 
 
 
 
