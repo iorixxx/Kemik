@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class Milliyet implements IDoc {
 
-    static final String[] categories = new String[]{"yasam", "siyaset", "yazar", "spor", "magazin", "dunya", "ekonomi", "guncel", "turkiye"};
+    static final String[] categories = new String[]{"yasam", "siyaset", "yazar", "spor", "magazin", "dunya", "ekonomi", "guncel"};
 
     static final Locale tr = Locale.forLanguageTag("tr-TR");
 

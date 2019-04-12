@@ -35,6 +35,7 @@ public class App {
             analyzedARFF(type, Analyzers.plain(), "_plain");
             analyzedARFF(type, Analyzers.decompose(false), "_birlesik");
             analyzedARFF(type, Analyzers.decompose(true), "_ayrik");
+            analyzedARFF(type, Analyzers.typo(), "_typo");
             index(type);
         }
     }

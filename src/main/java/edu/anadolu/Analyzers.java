@@ -57,17 +57,17 @@ class Analyzers {
 
     static Analyzer decompose(boolean decompose) throws IOException {
         return CustomAnalyzer.builder()
-                .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt", "decompose", Boolean.toString(decompose))
+                .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
                 .withTokenizer("standard")
                 .addTokenFilter("turkishlowercase")
                 .build();
     }
 
-    private static Analyzer typo() throws IOException {
+    static Analyzer typo() throws IOException {
         return CustomAnalyzer.builder()
                 .withTokenizer("standard")
                 .addTokenFilter("turkishlowercase")
-                .addTokenFilter("stemmeroverride", "dictionary", "typo_override.txt")
+                .addTokenFilter("stemmeroverride", "dictionary", "turkish_typo.txt")
                 .build();
     }
 
@@ -126,11 +126,11 @@ class Analyzers {
         getAnalyzedTokens(text, decompose(true));
 
         System.out.println("------------------------");
-        text = "masa üstü new york cat walk hamam böceği genel kurmay genelkurmay";
+        text = "masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı";
 
         System.out.println(getAnalyzedString(text, decompose(false)));
 
-        text = "yunanlı orjinal cimnastik yapmışlar";
+        text = "yunanlı orjinal cimnastik yapmışlar anotomi";
         System.out.println("------------------------");
         System.out.println(getAnalyzedString(text, typo()));
 

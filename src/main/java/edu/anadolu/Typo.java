@@ -22,7 +22,12 @@ public class Typo {
 
     public static void main(String[] args) throws Exception {
 
-        typos = Files.readAllLines(Paths.get("src/main/resources/typo.txt"), StandardCharsets.UTF_8).stream().map(String::trim).collect(Collectors.toList());
+        typos = Files.readAllLines(Paths.get("src/main/resources/turkish_typo.txt"), StandardCharsets.UTF_8)
+                .stream()
+                .map(String::trim)
+                .filter(s -> !s.startsWith("#"))
+                .map(s -> s.split("\t")[0])
+                .collect(Collectors.toList());
 
         for (DocType type : DocType.values()) {
             System.out.println("processing " + type);
