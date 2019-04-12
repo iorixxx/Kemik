@@ -41,6 +41,10 @@ public interface IDoc {
                 .replaceAll("&middot;", ".")
                 .replaceAll("&amp;", "&")
 
+                .replaceAll("&gt;", ">")
+                .replaceAll("&lt;", "<")
+                .replaceAll("&uml;", "..")
+                .replaceAll("&beta;", "beta")
 
 
                 .replaceAll("\\s+", " ")
