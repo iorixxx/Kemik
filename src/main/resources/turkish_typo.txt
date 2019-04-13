@@ -57,7 +57,7 @@ atelye	atölye
 ateşe	ataşe
 atmasyon	uydurma
 atmış	altmış
-avro	euro
+euro    avro
 avut	aut
 ayrıyeten	ayrıca
 #Azarbeycan	Azerbaycan
