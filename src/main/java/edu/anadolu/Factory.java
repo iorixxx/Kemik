@@ -31,6 +31,8 @@ class Factory {
                 return new TRT(p);
             case MIL:
                 return new MIL(p);
+            case AOF:
+                return new AOF(p);
             default:
                 throw new AssertionError(type);
         }
@@ -48,6 +50,8 @@ class Factory {
                 return TRT.categories;
             case MIL:
                 return MIL.categories;
+            case AOF:
+                return AOF.categories;
             default:
                 throw new AssertionError(type);
         }

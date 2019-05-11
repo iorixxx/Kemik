@@ -29,7 +29,9 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        for (DocType type : DocType.values()) {
+        DocType[] types = args.length == 1 ? new DocType[]{DocType.valueOf(args[0])} : DocType.values();
+
+        for (DocType type : types) {
             System.out.println("processing " + type);
             arff(type);
             analyzedARFF(type, Analyzers.plain(), "_plain");
