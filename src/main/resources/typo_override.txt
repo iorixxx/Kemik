@@ -55,7 +55,7 @@ atelye	atölye
 ateşe	ataşe
 atmasyon	uydurma
 atmış	altmış
-avro	euro
+avro    euro
 avut	aut
 ayrıyeten	ayrıca
 Azarbeycan	Azerbaycan
@@ -113,8 +113,6 @@ dökümanter	dokümanter
 döndermek	döndürmek
 duymamazlık	duymazlık
 düyüm	düğüm
-aşentiyon	eşantiyon
-aşantiyon	eşantiyon
 egzantrik	eksantrik
 ekzantrik 	eksantrik
 egsantrik	eksantrik
@@ -460,7 +458,6 @@ ultrasyon	ultrason
 ultümaton	ültimatom
 ultimatom	ültimatom
 usül	usul
-uydurmasyon	uydurma
 ünvan	unvan
 üvertür	uvertür
 üzre	üzere

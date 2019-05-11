@@ -18,7 +18,7 @@ import static edu.anadolu.Factory.categories;
 
 public class Typo {
 
-    private static List<String> typos;
+    private static Map<String, String> typos;
 
     public static void main(String[] args) throws Exception {
 
@@ -26,8 +26,11 @@ public class Typo {
                 .stream()
                 .map(String::trim)
                 .filter(s -> !s.startsWith("#"))
-                .map(s -> s.split("\t")[0])
-                .collect(Collectors.toList());
+                .map(s -> s.split("\t"))
+                .collect(Collectors.toMap(p -> p[0], p -> p[1]));
+
+
+        System.out.println(typos);
 
         for (DocType type : DocType.values()) {
             System.out.println("processing " + type);
@@ -43,15 +46,21 @@ public class Typo {
 
         List<Struct> list = new ArrayList<>();
 
-        for (String term : typos) {
+        for (String term : typos.keySet()) {
             Term t = new Term("plain", term);
             TermStatistics stats = searcher.termStatistics(t, TermContext.build(reader.getContext(), t));
-            list.add(new Struct(term, stats.totalTermFreq(), stats.docFreq()));
+            Struct struct = new Struct(term, stats.totalTermFreq(), stats.docFreq());
+
+            t = new Term("plain", typos.get(term));
+            stats = searcher.termStatistics(t, TermContext.build(reader.getContext(), t));
+            struct.correct = new Struct(typos.get(term), stats.totalTermFreq(), stats.docFreq());
+
+            list.add(struct);
         }
 
 
         PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), type.toString() + "_typo.txt"), StandardCharsets.UTF_8));
-        out.println("typo\ttf\tdf");
+        out.println("typo\ttf\tdf\tcorrect\ttf\tdf");
 
         list.sort(Collections.reverseOrder(Comparator.comparingLong(Struct::df)));
 
@@ -65,8 +74,9 @@ public class Typo {
             final Query filter = new TermQuery(new Term("category", category));
 
             Map<String, Integer> map = new HashMap<>();
+            Map<String, Integer> correct = new HashMap<>();
 
-            for (String term : typos)
+            for (String term : typos.keySet())
                 map.put(term.trim(), 0);
 
             for (String term : map.keySet()) {
@@ -82,14 +92,23 @@ public class Typo {
                 int docFreq = searcher.count(bq);
                 map.put(term, docFreq);
 
+                query = new TermQuery(new Term("plain", typos.get(term)));
+
+                bq = new BooleanQuery.Builder()
+                        .add(query, BooleanClause.Occur.MUST)
+                        .add(filter, BooleanClause.Occur.FILTER)
+                        .build();
+
+                correct.put(typos.get(term), searcher.count(bq));
+
             }
 
             final PrintWriter o = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), category + "_typo.txt"), StandardCharsets.UTF_8));
-
+            o.println("typo\tdf\tcorrect\tdf");
             map.entrySet()
                     .stream()
                     .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                    .forEach((e) -> o.println(e.getKey() + "\t" + e.getValue()));
+                    .forEach((e) -> o.println(e.getKey() + "\t" + e.getValue() + "\t" + typos.get(e.getKey()) + "\t" + correct.get(typos.get(e.getKey()))));
 
             o.flush();
             o.close();
@@ -113,9 +132,12 @@ public class Typo {
             return df;
         }
 
+        Struct correct;
+
+
         @Override
         public String toString() {
-            return term + "\t" + tf + "\t" + df;
+            return term + "\t" + tf + "\t" + df + (correct == null ? "" : "\t" + correct.toString());
         }
     }
 }
