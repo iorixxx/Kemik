@@ -255,7 +255,7 @@ kordale	kurdele
 kurdale	kurdele
 küpür	kupür
 küvöz	kuvöz
-#Levent	4. Levent
+#4 Levent	4. Levent
 layik	laik
 labaratuar	laboratuvar
 labaratuvar	laboratuvar
@@ -301,6 +301,7 @@ mozayik	mozaik
 mönü	menü
 muacir	muhacir
 muaffak	muvaffak
+muhattap	muhatap
 mundar	murdar
 mustarip	muzdarip
 muşanba	muşamba
@@ -422,13 +423,14 @@ sütüdyo	stüdyo
 şarter	şalter
 şarz	şarj
 şemşiye	şemsiye
+şayibe  şaibe
 şevkat	şefkat
 şifai	şifahi
 şindi	şimdi
 şohben	şofben
 #şok olmak	şoke olmak
 şöför	şoför
-tadilatlat	tadilat
+tadilatlar	tadilat
 tahüt	taahüt
 tamüden	taamüden
 tafsiye	tavsiye
