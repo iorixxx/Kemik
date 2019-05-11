@@ -6,15 +6,22 @@ class AOF extends Kemik {
 
     static final String[] categories = new String[]{"felsefe", "sosyoloji", "lojistik", "ilahiyat"};
 
+    private final Path p;
+
     AOF(Path p) {
         super(p);
+        this.p = p;
     }
 
+    @Override
     public String id() {
-        return super.id().replaceAll(" ", "_");
+        String fileName = p.getFileName().toString();
+        return fileName.substring(0, fileName.length() - 4);
     }
 
+    @Override
     public String category() {
-        return super.category().replaceAll(" ", "_");
+        String fileName = p.getFileName().toString();
+        return fileName.substring(3);
     }
 }
