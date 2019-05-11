@@ -423,7 +423,7 @@ sütüdyo	stüdyo
 şarter	şalter
 şarz	şarj
 şemşiye	şemsiye
-şayibe  şaibe
+şayibe	şaibe
 şevkat	şefkat
 şifai	şifahi
 şindi	şimdi

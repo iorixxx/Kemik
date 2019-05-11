@@ -29,9 +29,6 @@ public class Typo {
                 .map(s -> s.split("\t"))
                 .collect(Collectors.toMap(p -> p[0], p -> p[1]));
 
-
-        System.out.println(typos);
-
         for (DocType type : DocType.values()) {
             System.out.println("processing " + type);
             list(type);

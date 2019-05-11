@@ -408,7 +408,7 @@ sütüdyo	stüdyo
 şanzuman	şanzıman
 şarter	şalter
 şarz	şarj
-şayibe  şaibe
+şayibe	şaibe
 şemşiye	şemsiye
 şevkat	şefkat
 şifai	şifahi
