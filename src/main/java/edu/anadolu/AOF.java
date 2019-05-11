@@ -22,6 +22,6 @@ class AOF extends Kemik {
     @Override
     public String category() {
         String fileName = p.getFileName().toString();
-        return fileName.substring(3);
+        return fileName.substring(0, 3);
     }
 }
