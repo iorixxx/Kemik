@@ -27,6 +27,7 @@ class AOF extends Kemik {
             "OMB",
             "LOJ",
             "PSI",
+            "KYT",
             "CEK",
             "TSH",
             "FOT",
@@ -49,6 +50,7 @@ class AOF extends Kemik {
             "SAN",
             "SIY",
             "TKY",
+            "ARY",
             "BYA",
             "MVU",
             "RTP",
@@ -80,7 +82,7 @@ class AOF extends Kemik {
             "TAB",
             "SOS",
             "IKY",
-            "PMY",
+            "PMY"
     };
 
     private final Path p;
