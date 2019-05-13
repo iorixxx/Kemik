@@ -117,7 +117,7 @@ public class Typo {
 
     private static int ttf(IndexReader reader, IndexSearcher searcher, String category, String term) throws IOException {
 
-        PostingsEnum postingsEnum = MultiFields.getTermDocsEnum(reader, "pain", new Term("plain", term).bytes());
+        PostingsEnum postingsEnum = MultiFields.getTermDocsEnum(reader, "plain", new Term("plain", term).bytes());
 
         if (postingsEnum == null) {
             System.out.println("term " + term + " is null");
