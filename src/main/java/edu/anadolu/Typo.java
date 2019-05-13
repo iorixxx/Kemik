@@ -1,12 +1,11 @@
 package edu.anadolu;
 
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.TermContext;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -70,14 +69,11 @@ public class Typo {
 
             final Query filter = new TermQuery(new Term("category", category));
 
-            Map<String, Integer> map = new HashMap<>();
-            Map<String, Integer> correct = new HashMap<>();
+            list = new ArrayList<>();
 
-            for (String term : typos.keySet())
-                map.put(term.trim(), 0);
 
-            for (String term : map.keySet()) {
-                term = term.trim();
+            for (String term : typos.keySet()) {
+
 
                 Query query = new TermQuery(new Term("plain", term));
 
@@ -86,8 +82,12 @@ public class Typo {
                         .add(filter, BooleanClause.Occur.FILTER)
                         .build();
 
-                int docFreq = searcher.count(bq);
-                map.put(term, docFreq);
+                int df = searcher.count(bq);
+                long tf = ttf(reader, searcher, category, term);
+                Struct struct = new Struct(term, tf, df);
+
+                System.out.println("df=" + df);
+
 
                 query = new TermQuery(new Term("plain", typos.get(term)));
 
@@ -96,22 +96,44 @@ public class Typo {
                         .add(filter, BooleanClause.Occur.FILTER)
                         .build();
 
-                correct.put(typos.get(term), searcher.count(bq));
+                struct.correct = new Struct(typos.get(term), ttf(reader, searcher, category, typos.get(term)), searcher.count(bq));
+                list.add(struct);
 
             }
 
             final PrintWriter o = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), category + "_typo.txt"), StandardCharsets.UTF_8));
-            o.println("typo\tdf\tcorrect\tdf");
-            map.entrySet()
-                    .stream()
-                    .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                    .forEach((e) -> o.println(e.getKey() + "\t" + e.getValue() + "\t" + typos.get(e.getKey()) + "\t" + correct.get(typos.get(e.getKey()))));
+            o.println("typo\ttf\tdf\tcorrect\ttf\tdf");
+
+            list.sort(Collections.reverseOrder(Comparator.comparingLong(Struct::df)));
+
+            list.forEach(o::println);
 
             o.flush();
             o.close();
-            map.clear();
         }
         reader.close();
+    }
+
+    private static int ttf(IndexReader reader, IndexSearcher searcher, String category, String term) throws IOException {
+
+        PostingsEnum postingsEnum = MultiFields.getTermDocsEnum(reader, "pain", new Term("plain", term).bytes());
+
+        if (postingsEnum == null) return 0;
+
+        int freq = 0;
+        int df = 0;
+        while (postingsEnum.nextDoc() != PostingsEnum.NO_MORE_DOCS) {
+
+            Document doc = searcher.doc(postingsEnum.docID());
+
+            if (doc.get("category").equals(category)) {
+                freq += postingsEnum.freq();
+                df++;
+            }
+        }
+
+        System.out.println("df=" + df);
+        return freq;
     }
 
     static class Struct {
