@@ -64,6 +64,7 @@ public class Typo {
 
         out.flush();
         out.close();
+        list.clear();
 
         for (String category : categories(type)) {
 
@@ -118,7 +119,10 @@ public class Typo {
 
         PostingsEnum postingsEnum = MultiFields.getTermDocsEnum(reader, "pain", new Term("plain", term).bytes());
 
-        if (postingsEnum == null) return 0;
+        if (postingsEnum == null) {
+            System.out.println("term " + term + " is null");
+            return 0;
+        }
 
         int freq = 0;
         int df = 0;
@@ -126,8 +130,11 @@ public class Typo {
 
             Document doc = searcher.doc(postingsEnum.docID());
 
+            System.out.println(doc.get("category") + " " + term);
+
             if (doc.get("category").equals(category)) {
                 freq += postingsEnum.freq();
+
                 df++;
             }
         }
