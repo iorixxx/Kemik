@@ -85,19 +85,11 @@ public class Typo {
 
                 int df = searcher.count(bq);
                 Struct s = ttf(reader, searcher, category, term);
-                long tf = s.tf;
-                Struct struct = new Struct(term, tf, df);
+
+                Struct struct = new Struct(term, s.tf, df);
 
                 if (df != s.df)
                     throw new RuntimeException();
-
-
-                query = new TermQuery(new Term("plain", typos.get(term)));
-
-                bq = new BooleanQuery.Builder()
-                        .add(query, BooleanClause.Occur.MUST)
-                        .add(filter, BooleanClause.Occur.FILTER)
-                        .build();
 
                 struct.correct = ttf(reader, searcher, category, typos.get(term));
                 list.add(struct);
