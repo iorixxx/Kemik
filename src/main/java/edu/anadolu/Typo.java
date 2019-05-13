@@ -84,10 +84,12 @@ public class Typo {
                         .build();
 
                 int df = searcher.count(bq);
-                long tf = ttf(reader, searcher, category, term);
+                Struct s = ttf(reader, searcher, category, term);
+                long tf = s.tf;
                 Struct struct = new Struct(term, tf, df);
 
-                System.out.println("df=" + df);
+                if (df != s.df)
+                    throw new RuntimeException();
 
 
                 query = new TermQuery(new Term("plain", typos.get(term)));
@@ -97,7 +99,7 @@ public class Typo {
                         .add(filter, BooleanClause.Occur.FILTER)
                         .build();
 
-                struct.correct = new Struct(typos.get(term), ttf(reader, searcher, category, typos.get(term)), searcher.count(bq));
+                struct.correct = ttf(reader, searcher, category, typos.get(term));
                 list.add(struct);
 
             }
@@ -115,32 +117,26 @@ public class Typo {
         reader.close();
     }
 
-    private static int ttf(IndexReader reader, IndexSearcher searcher, String category, String term) throws IOException {
+    private static Struct ttf(IndexReader reader, IndexSearcher searcher, String category, String term) throws IOException {
 
         PostingsEnum postingsEnum = MultiFields.getTermDocsEnum(reader, "plain", new Term("plain", term).bytes());
 
-        if (postingsEnum == null) {
-            System.out.println("term " + term + " is null");
-            return 0;
-        }
+        if (postingsEnum == null)
+            return new Struct(term, 0, 0);
 
-        int freq = 0;
+
+        int tf = 0;
         int df = 0;
         while (postingsEnum.nextDoc() != PostingsEnum.NO_MORE_DOCS) {
 
             Document doc = searcher.doc(postingsEnum.docID());
 
-            System.out.println(doc.get("category") + " " + term);
-
             if (doc.get("category").equals(category)) {
-                freq += postingsEnum.freq();
-
+                tf += postingsEnum.freq();
                 df++;
             }
         }
-
-        System.out.println("df=" + df);
-        return freq;
+        return new Struct(term, tf, df);
     }
 
     static class Struct {
