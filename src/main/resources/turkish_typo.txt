@@ -75,7 +75,6 @@ beyenmek	beğenmek
 bilader	birader
 bilimum	bilumum
 bilmemezlik	bilmezlik
-biodizel	biyodizel
 birfiil	bilfiil
 birhaber	bihaber
 bisküüt	bisküvi
@@ -499,3 +498,6 @@ yunanlı	yunan
 zerafet	zarafet
 ziğnet	ziynet
 #Zülfikâr	Zülfikar
+# katki@tdk.gov.tr
+hemşeri	hemşehri
+biodizel	biyodizel
