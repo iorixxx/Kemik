@@ -135,7 +135,7 @@ erezyon	erozyon
 erzağı	erzakı
 eskirim	eskrim
 espiri	espri
-eşgal	eşkâl
+eşgal	eşkal
 #eşkal	eşkâl
 eşortman	eşofman
 eşşek	eşek
@@ -166,7 +166,7 @@ gometri	geometri
 gömetri	geometri
 #gol yapmak	gol atmak
 #Gökân	Gökhan
-gökân	gökhan
+gökan	gökhan
 görseller	görüntüler
 gravat	kravat
 #Hakkari	Hakkâri
@@ -175,7 +175,7 @@ halisinasyon	halüsinasyon
 halisünasyon	halüsinasyon
 #haremlik selamlık	harem selamlık
 harfiyat	hafriyat
-herıld	herhâlde
+herıld	herhalde
 herkez	herkes
 herkeş	herkes
 heycan	heyecan

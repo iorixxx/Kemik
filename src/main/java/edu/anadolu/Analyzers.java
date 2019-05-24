@@ -2,6 +2,7 @@ package edu.anadolu;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.charfilter.MappingCharFilterFactory;
 import org.apache.lucene.analysis.core.FlattenGraphFilterFactory;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
@@ -71,6 +72,15 @@ class Analyzers {
                 .build();
     }
 
+    static Analyzer mapping_typo() throws IOException {
+        return CustomAnalyzer.builder()
+                .addCharFilter(MappingCharFilterFactory.class, "mapping", "turkish_mapping_typo.txt")
+                .withTokenizer("standard")
+                .addTokenFilter("turkishlowercase")
+                .build();
+    }
+
+
     /**
      * Modified from : http://lucene.apache.org/core/4_10_2/core/org/apache/lucene/analysis/package-summary.html
      */
@@ -125,14 +135,20 @@ class Analyzers {
 
         getAnalyzedTokens(text, decompose(true));
 
-        System.out.println("------------------------");
+        System.out.println("----------decompose=false--------------");
         text = "masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı";
 
         System.out.println(getAnalyzedString(text, decompose(false)));
 
-        text = "yunanlı orjinal cimnastik yapmışlar anotomi";
-        System.out.println("------------------------");
+        text = "yunanlı orjinal cimnastik yapmışlar anotomi motorsiklet motorsiklette orjinali orjinalleri";
+        System.out.println("--------typo----------------");
         System.out.println(getAnalyzedString(text, typo()));
+
+        System.out.println("---------mapping_typo---------------");
+        System.out.println(getAnalyzedString(text, mapping_typo()));
+
+        System.out.println("---------mapping_typo---------------");
+        System.out.println(getAnalyzedString("psikiyatrist psikiyatristi psikiyatristin psikiyatristiniz psikiyatristler psikiyatristlerin", mapping_typo()));
 
     }
 }
