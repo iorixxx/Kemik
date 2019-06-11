@@ -46,19 +46,21 @@ public class Typo {
             Term t = new Term("plain", term);
             TermStatistics stats = searcher.termStatistics(t, TermContext.build(reader.getContext(), t));
             Struct struct = new Struct(term, stats.totalTermFreq(), stats.docFreq());
+            struct.sdf = startsWith(term, searcher);
 
             t = new Term("plain", typos.get(term));
             stats = searcher.termStatistics(t, TermContext.build(reader.getContext(), t));
             struct.correct = new Struct(typos.get(term), stats.totalTermFreq(), stats.docFreq());
+            struct.correct.sdf = startsWith(typos.get(term), searcher);
 
             list.add(struct);
         }
 
 
         PrintWriter out = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), type.toString() + "_typo.txt"), StandardCharsets.UTF_8));
-        out.println("typo\ttf\tdf\tcorrect\ttf\tdf");
+        out.println("typo\ttf\tdf\tsdf\tcorrect\ttf\tdf\tsdf");
 
-        list.sort(Collections.reverseOrder(Comparator.comparingLong(Struct::df)));
+        list.sort(Collections.reverseOrder(Comparator.comparingLong(Struct::sdf)));
 
         list.forEach(out::println);
 
@@ -76,30 +78,22 @@ public class Typo {
             for (String term : typos.keySet()) {
 
 
-                Query query = new TermQuery(new Term("plain", term));
+                Struct struct = ttf(reader, searcher, category, term);
+                struct.sdf = startsWith(term, filter, searcher);
 
-                BooleanQuery bq = new BooleanQuery.Builder()
-                        .add(query, BooleanClause.Occur.MUST)
-                        .add(filter, BooleanClause.Occur.FILTER)
-                        .build();
-
-                int df = searcher.count(bq);
-                Struct s = ttf(reader, searcher, category, term);
-
-                Struct struct = new Struct(term, s.tf, df);
-
-                if (df != s.df)
-                    throw new RuntimeException();
+                if (struct.sdf < struct.df)
+                    throw new RuntimeException(term + ": " + struct.sdf + " " + struct.df);
 
                 struct.correct = ttf(reader, searcher, category, typos.get(term));
+                struct.correct.sdf = startsWith(typos.get(term), filter, searcher);
                 list.add(struct);
 
             }
 
             final PrintWriter o = new PrintWriter(Files.newBufferedWriter(Paths.get(type.toString(), category + "_typo.txt"), StandardCharsets.UTF_8));
-            o.println("typo\ttf\tdf\tcorrect\ttf\tdf");
+            o.println("typo\ttf\tdf\tsdf\tcorrect\ttf\tdf\tsdf");
 
-            list.sort(Collections.reverseOrder(Comparator.comparingLong(Struct::df)));
+            list.sort(Collections.reverseOrder(Comparator.comparingLong(Struct::sdf)));
 
             list.forEach(o::println);
 
@@ -107,6 +101,22 @@ public class Typo {
             o.close();
         }
         reader.close();
+    }
+
+    private static int startsWith(String term, final Query filter, IndexSearcher searcher) throws IOException {
+        WildcardQuery query = new WildcardQuery(new Term("plain", term + "*"));
+
+        BooleanQuery bq = new BooleanQuery.Builder()
+                .add(query, BooleanClause.Occur.MUST)
+                .add(filter, BooleanClause.Occur.FILTER)
+                .build();
+
+        return searcher.count(bq);
+    }
+
+    private static int startsWith(String term, IndexSearcher searcher) throws IOException {
+        WildcardQuery query = new WildcardQuery(new Term("plain", term + "*"));
+        return searcher.count(query);
     }
 
     private static Struct ttf(IndexReader reader, IndexSearcher searcher, String category, String term) throws IOException {
@@ -146,12 +156,17 @@ public class Typo {
             return df;
         }
 
+        long sdf() {
+            return sdf;
+        }
+
         Struct correct;
 
+        long sdf;
 
         @Override
         public String toString() {
-            return term + "\t" + tf + "\t" + df + (correct == null ? "" : "\t" + correct.toString());
+            return term + "\t" + tf + "\t" + df + "\t" + sdf + (correct == null ? "" : "\t" + correct.toString());
         }
     }
 }
