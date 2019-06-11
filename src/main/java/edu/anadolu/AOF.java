@@ -82,7 +82,9 @@ class AOF extends Kemik {
             "TAB",
             "SOS",
             "IKY",
-            "PMY"
+            "PMY",
+            "MNT",
+            "EBR"
     };
 
     private final Path p;

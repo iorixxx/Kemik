@@ -85,7 +85,7 @@ public class App {
 
         out.flush();
         out.close();
-        categories.entrySet().forEach(System.out::println);
+        categories.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(System.out::println);
 
     }
 
