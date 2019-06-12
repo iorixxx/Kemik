@@ -54,11 +54,15 @@ aşofman	eşofman
 #at binmek	ata binmek
 ataç	ataş
 atelye	atölye
-ateşe	ataşe
+# context-free
+#ateşe	ataşe
 atmasyon	uydurma
-atmış	altmış
-euro	avro
-avut	aut
+# context-free
+#atmış	altmış
+# context-free
+#euro	avro
+# context-free
+#avut	aut
 ayrıyeten	ayrıca
 #Azarbeycan	Azerbaycan
 azarbeycan	azerbaycan
@@ -69,7 +73,8 @@ azarbaycan	azerbaycan
 azemi	azami
 #banyo yapmak	yıkanmak
 barsak	bağırsak
-baya	bayağı
+# context-free
+#baya	bayağı
 benle	benimle
 beyenmek	beğenmek
 bilader	birader
@@ -106,11 +111,13 @@ deyinmek	değinmek
 deynek	değnek
 #-di'li geçmiş	belirli geçmiş
 dinazor	dinozor
-direk	direkt
+# context-free
+#direk	direkt
 dispirator	distribütör
 distribitör	distribütör
 diyaloga	diyaloğa
-doğma	dogma
+# context-free
+#doğma	dogma
 dokunmatik	dokunmalı
 döküman	doküman
 dökümanter	dokümanter
@@ -126,7 +133,8 @@ eksoz	egzoz
 egzost	egzoz
 eksozt	egzoz
 #Eğridir	Eğirdir
-eğridir	eğirdir
+# context-free
+#eğridir	eğirdir
 ekistra	ekstra
 entellektüel	entelektüel
 entrasan	enteresan
@@ -150,7 +158,8 @@ fasülye	fasulye
 felan	falan
 fermar	fermuar
 fesetmek	feshetmek
-fiat	fiyat
+# context-free
+#fiat	fiyat
 filim	film
 fites	vites
 #fizik tedavisi	fizik tedavi
@@ -185,7 +194,8 @@ hıristiyan	hristiyan
 hintli	hint
 hoporlör	hoparlör
 hukuğun	hukukun
-ır	yır
+# context-free
+#ır	yır
 ıskonto	iskonto
 #Istanbul	İstanbul
 ıstanbul	istanbul
@@ -323,7 +333,8 @@ netekim	nitekim
 nisbet	nispet
 nötür	nötr
 nülüfer	nilüfer
-oce	oje
+# context-free
+#oce	oje
 oğostos	ağustos
 oğustos	ağustos
 oporlor	hoparlör
@@ -337,7 +348,8 @@ orjinal	orijinal
 #Osmanlıca	Osmanlı Türkçesi
 öğe	öge
 ötenazi	ötanazi
-öyle	öğle
+# context-free
+#öyle	öğle
 palyanço	palyaço
 panaroma	panorama
 #panik oldum	paniğe kapılmak
@@ -377,11 +389,14 @@ revanş	rövanş
 rezarvasyon	rezervasyon
 riks	risk
 romörkör	römorkör
-sada	seda
-safa	sefa
+# context-free
+#sada	seda
+# context-free
+#safa	sefa
 sağnak	sağanak
 #sahne almak	sahneye çıkmak
-sala	sela
+# context-free
+#sala	sela
 salomanje	salamanje
 salomance	salamanje
 sandoviç	sandviç
@@ -392,7 +407,8 @@ sarmısak	sarımsak
 satlık	satılık
 senle	seninle
 seramoni	seremoni
-serbes	serbest
+# context-free
+#serbes	serbest
 seyehat	seyahat
 sezeryan	sezaryen
 #Sıvas	Sivas
@@ -459,7 +475,8 @@ tetanoz	tetanos
 tiskinmek	tiksinmek
 tiyo	tüyo
 tolorans	tolerans
-tos	tost
+# context-free
+#tos	tost
 törörist	terörist
 trabzan	tırabzan
 traş	tıraş

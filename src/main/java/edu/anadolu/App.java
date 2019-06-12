@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
@@ -85,7 +86,7 @@ public class App {
 
         out.flush();
         out.close();
-        categories.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(System.out::println);
+        categories.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEach(System.out::println);
 
     }
 
