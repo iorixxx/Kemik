@@ -72,7 +72,7 @@ bel_kemiği
 alt_yapı
 ana_dil
 kara_toprak
-türk_ evi
+türk_evi
 mevzu_bahis
 baş_diyetisyen
 dil_bilimciler

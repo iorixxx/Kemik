@@ -56,12 +56,22 @@ class Analyzers {
                 .build();
     }
 
-    static Analyzer decompose(boolean decompose) throws IOException {
-        return CustomAnalyzer.builder()
-                .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
-                .withTokenizer("standard")
-                .addTokenFilter("turkishlowercase")
-                .build();
+    static Analyzer decompose(boolean decompose, boolean typo) throws IOException {
+
+        if (typo)
+            return CustomAnalyzer.builder()
+                    .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
+                    .withTokenizer("standard")
+                    .addTokenFilter("turkishlowercase")
+                    .addTokenFilter("stemmeroverride", "dictionary", "turkish_typo.txt")
+                    .build();
+        else
+            return CustomAnalyzer.builder()
+                    .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
+                    .withTokenizer("standard")
+                    .addTokenFilter("turkishlowercase")
+                    .build();
+
     }
 
     static Analyzer typo() throws IOException {
@@ -133,12 +143,12 @@ class Analyzers {
 
         String text = "masaüstü newyork catwalk hamamböceği genel kurmay genelkurmay";
 
-        getAnalyzedTokens(text, decompose(true));
+        getAnalyzedTokens(text, decompose(true, false));
 
         System.out.println("----------decompose=false--------------");
         text = "masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı";
 
-        System.out.println(getAnalyzedString(text, decompose(false)));
+        System.out.println(getAnalyzedString(text, decompose(false, false)));
 
         text = "yunanlı orjinal cimnastik yapmışlar anotomi motorsiklet motorsiklette orjinali orjinalleri";
         System.out.println("--------typo----------------");
@@ -149,6 +159,15 @@ class Analyzers {
 
         System.out.println("---------mapping_typo---------------");
         System.out.println(getAnalyzedString("psikiyatrist psikiyatristi psikiyatristin psikiyatristiniz psikiyatristler psikiyatristlerin", mapping_typo()));
+
+        text = "orjinal cimnastik masaüstü newyork catwalk hamamböceği genel kurmay genelkurmay";
+        System.out.println("----------decompose=true,typo=true--------------");
+        System.out.println(getAnalyzedString(text, decompose(true, true)));
+
+        System.out.println("----------decompose=false,typo=true--------------");
+        text = "orjinal cimnastik masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı";
+
+        System.out.println(getAnalyzedString(text, decompose(false, true)));
 
     }
 }
