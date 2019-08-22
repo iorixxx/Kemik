@@ -56,15 +56,24 @@ class Analyzers {
                 .build();
     }
 
-    static Analyzer decompose(boolean decompose, boolean typo) throws IOException {
+    static Analyzer decompose(boolean decompose, boolean typo, boolean mapping) throws IOException {
 
         if (typo)
-            return CustomAnalyzer.builder()
-                    .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
-                    .withTokenizer("standard")
-                    .addTokenFilter("turkishlowercase")
-                    .addTokenFilter("stemmeroverride", "dictionary", "turkish_typo.txt")
-                    .build();
+            if (mapping)
+                return CustomAnalyzer.builder()
+                        .addCharFilter(MappingCharFilterFactory.class, "mapping", "turkish_mapping_typo.txt")
+                        .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
+                        .withTokenizer("standard")
+                        .addTokenFilter("turkishlowercase")
+                        .build();
+            else
+                return CustomAnalyzer.builder()
+                        .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
+                        .withTokenizer("standard")
+                        .addTokenFilter("turkishlowercase")
+                        .addTokenFilter("stemmeroverride", "dictionary", "turkish_typo.txt")
+                        .build();
+
         else
             return CustomAnalyzer.builder()
                     .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
@@ -143,12 +152,12 @@ class Analyzers {
 
         String text = "masaüstü newyork catwalk hamamböceği genel kurmay genelkurmay";
 
-        getAnalyzedTokens(text, decompose(true, false));
+        getAnalyzedTokens(text, decompose(true, false, false));
 
         System.out.println("----------decompose=false--------------");
         text = "masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı";
 
-        System.out.println(getAnalyzedString(text, decompose(false, false)));
+        System.out.println(getAnalyzedString(text, decompose(false, false, false)));
 
         text = "yunanlı orjinal cimnastik yapmışlar anotomi motorsiklet motorsiklette orjinali orjinalleri";
         System.out.println("--------typo----------------");
@@ -162,12 +171,12 @@ class Analyzers {
 
         text = "orjinal cimnastik masaüstü newyork catwalk hamamböceği genel kurmay genelkurmay";
         System.out.println("----------decompose=true,typo=true--------------");
-        System.out.println(getAnalyzedString(text, decompose(true, true)));
+        System.out.println(getAnalyzedString(text, decompose(true, true, false)));
 
         System.out.println("----------decompose=false,typo=true--------------");
         text = "orjinal cimnastik masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı";
 
-        System.out.println(getAnalyzedString(text, decompose(false, true)));
+        System.out.println(getAnalyzedString(text, decompose(false, true, false)));
 
     }
 }
