@@ -24,27 +24,30 @@ import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import static edu.anadolu.Analyzers.analyzerWrapper;
+import static edu.anadolu.DocType.*;
+import static edu.anadolu.DocType.MIL;
+import static edu.anadolu.DocType.TRT;
+import static edu.anadolu.DocType.TTC3600;
 import static edu.anadolu.Factory.*;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
 
-        DocType[] types = args.length == 1 ? new DocType[]{DocType.valueOf(args[0])} : DocType.values();
+        DocType[] types = args.length == 1 ? new DocType[]{DocType.valueOf(args[0])} : new DocType[]{TTC3600, Kemik42bin, TRT, MIL};
 
         for (DocType type : types) {
             System.out.println("processing " + type);
-            arff(type);
+            //  arff(type);
             analyzedARFF(type, Analyzers.plain(), "_plain");
-            analyzedARFF(type, Analyzers.decompose(false, false, false), "_birlesik");
-            analyzedARFF(type, Analyzers.decompose(true, false, false), "_ayrik");
+            //  analyzedARFF(type, Analyzers.decompose(false, false, false), "_birlesik");
+            //  analyzedARFF(type, Analyzers.decompose(true, false, false), "_ayrik");
             analyzedARFF(type, Analyzers.typo(), "_typo");
             analyzedARFF(type, Analyzers.mapping_typo(), "_mapping_typo");
-            analyzedARFF(type, Analyzers.decompose(false, true, false), "_birlesik_typo");
-            analyzedARFF(type, Analyzers.decompose(true, true, false), "_ayrik_typo");
+            //   analyzedARFF(type, Analyzers.decompose(false, true, false), "_birlesik_typo");
+            //   analyzedARFF(type, Analyzers.decompose(true, true, false), "_ayrik_typo");
             analyzedARFF(type, Analyzers.decompose(false, true, true), "_birlesik_mapping_typo");
             analyzedARFF(type, Analyzers.decompose(true, true, true), "_ayrik_mapping_typo");
-            index(type);
         }
     }
 
@@ -148,7 +151,7 @@ public class App {
     };
 
 
-    private static void index(DocType type) throws IOException {
+    static void index(DocType type) throws IOException {
 
         Directory dir = FSDirectory.open(Paths.get(type.toString()));
         IndexWriterConfig iwc = new IndexWriterConfig(analyzerWrapper());

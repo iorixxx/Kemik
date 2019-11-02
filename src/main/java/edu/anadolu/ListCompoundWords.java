@@ -49,6 +49,7 @@ public class ListCompoundWords {
     public static void main(String[] args) throws Exception {
 
         for (DocType type : DocType.values()) {
+            App.index(type);
             System.out.println("processing " + type);
             list(type);
         }
