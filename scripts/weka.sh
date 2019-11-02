@@ -31,7 +31,7 @@ for set in MIL TRT TTC3600; do
     for i in {1..4}; do
 
     echo "results/${name}_${acronym[${i}]}.txt"
-    java -Dfile.encoding=UTF-8 -Djava.awt.headless=true -server -Xms18g -Xmx18g -cp weka.jar ${method[${i}]} -c 1 -x 10 -t "vectors/${f##/*/}" > "results/${name}_${acronym[${i}]}.txt"
+    java --add-opens=java.base/java.lang=ALL-UNNAMED -Dfile.encoding=UTF-8 -Djava.awt.headless=true -server -Xms18g -Xmx18g -cp weka.jar ${method[${i}]} -c 1 -x 10 -t "vectors/${f##/*/}" > "results/${name}_${acronym[${i}]}.txt"
 
     done
     done
