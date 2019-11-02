@@ -109,6 +109,8 @@ public class App {
 
         out.println("@data");
 
+        Analyzer stemmer = Analyzers.zemberek();
+
 
         stream.forEach(p -> {
 
@@ -119,7 +121,10 @@ public class App {
                 return;
             }
 
-            String content = weka.core.Utils.quote(Analyzers.getAnalyzedString(iDoc.content(), analyzer));
+            // TODO
+            String stemmed = Analyzers.getAnalyzedString(iDoc.content(), stemmer);
+            String content = weka.core.Utils.quote(Analyzers.getAnalyzedString(stemmed, analyzer));
+
             out.print(category);
             out.print(",");
             out.println(content);

@@ -13,6 +13,14 @@
         <lucene.version>7.7.1</lucene.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>ahmetaa-repo</id>
+            <name>ahmetaa Maven Repo on Github</name>
+            <url>https://raw.github.com/ahmetaa/maven-repo/master</url>
+        </repository>
+    </repositories>
+
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -113,6 +121,30 @@
             <version>${lucene.version}</version>
             <type>jar</type>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>TurkishAnalysis</artifactId>
+            <version>8.2.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>zemberek-nlp</groupId>
+            <artifactId>zemberek-core</artifactId>
+            <version>0.17.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>zemberek-nlp</groupId>
+            <artifactId>zemberek-morphology</artifactId>
+            <version>0.17.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

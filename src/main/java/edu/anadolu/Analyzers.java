@@ -62,13 +62,13 @@ class Analyzers {
             if (mapping)
                 return CustomAnalyzer.builder()
                         .addCharFilter(MappingCharFilterFactory.class, "mapping", "turkish_mapping_typo.txt")
-                        .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
+                        .addCharFilter(StemFirstCompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
                         .withTokenizer("standard")
                         .addTokenFilter("turkishlowercase")
                         .build();
             else
                 return CustomAnalyzer.builder()
-                        .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
+                        .addCharFilter(StemFirstCompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
                         .withTokenizer("standard")
                         .addTokenFilter("turkishlowercase")
                         .addTokenFilter("stemmeroverride", "dictionary", "turkish_typo.txt")
@@ -76,7 +76,7 @@ class Analyzers {
 
         else
             return CustomAnalyzer.builder()
-                    .addCharFilter(CompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
+                    .addCharFilter(StemFirstCompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
                     .withTokenizer("standard")
                     .addTokenFilter("turkishlowercase")
                     .build();
@@ -96,6 +96,15 @@ class Analyzers {
                 .addCharFilter(MappingCharFilterFactory.class, "mapping", "turkish_mapping_typo.txt")
                 .withTokenizer("standard")
                 .addTokenFilter("turkishlowercase")
+                .build();
+    }
+
+    static Analyzer zemberek() throws IOException {
+        return CustomAnalyzer.builder()
+                .addCharFilter(MappingCharFilterFactory.class, "mapping", "turkish_mapping_typo.txt")
+                .withTokenizer("standard")
+                .addTokenFilter("turkishlowercase")
+                .addTokenFilter(org.apache.lucene.analysis.tr.Zemberek3StemFilterFactory.class)
                 .build();
     }
 
@@ -169,14 +178,32 @@ class Analyzers {
         System.out.println("---------mapping_typo---------------");
         System.out.println(getAnalyzedString("psikiyatrist psikiyatristi psikiyatristin psikiyatristiniz psikiyatristler psikiyatristlerin", mapping_typo()));
 
-        text = "orjinal cimnastik masaüstü newyork catwalk hamamböceği genel kurmay genelkurmay";
+        text = "teröristbaşının orjinal cimnastik masaüstü newyork catwalk hamamböceği hamamböceklerini genel kurmay genelkurmay süper market süper marketler süpermarket süpermarketler";
         System.out.println("----------decompose=true,typo=true--------------");
         System.out.println(getAnalyzedString(text, decompose(true, true, false)));
 
         System.out.println("----------decompose=false,typo=true--------------");
-        text = "orjinal cimnastik masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı";
+        text = "teröristbaşının orjinal cimnastik masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı hamamböceklerini süper market süper marketler süpermarket süpermarketler";
 
         System.out.println(getAnalyzedString(text, decompose(false, true, false)));
+
+        text = "teröristbaşının terörist başının orjinal cimnastik masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı hamamböceklerini süper market süper marketler süpermarket süpermarketler";
+
+        stemFirst(text);
+    }
+
+
+    private static void stemFirst(String text) throws IOException {
+
+        System.out.println("-----------sampe text--------------------");
+        System.out.println(text);
+        String stemmed = getAnalyzedString(text, zemberek());
+
+        System.out.println("----------decompose=false,typo=true,mapping=true--------------");
+        System.out.println(getAnalyzedString(stemmed, decompose(false, true, true)));
+
+        System.out.println("----------decompose=true,typo=true,mapping=true--------------");
+        System.out.println(getAnalyzedString(stemmed, decompose(true, true, true)));
 
     }
 }
