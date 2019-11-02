@@ -40,12 +40,12 @@ public class App {
             System.out.println("processing " + type);
             //  arff(type);
             analyzedARFF(type, Analyzers.plain(), "_plain");
-            //  analyzedARFF(type, Analyzers.decompose(false, false, false), "_birlesik");
-            //  analyzedARFF(type, Analyzers.decompose(true, false, false), "_ayrik");
+            analyzedARFF(type, Analyzers.decompose(false, false, false), "_birlesik");
+            analyzedARFF(type, Analyzers.decompose(true, false, false), "_ayrik");
             analyzedARFF(type, Analyzers.typo(), "_typo");
             analyzedARFF(type, Analyzers.mapping_typo(), "_mapping_typo");
-            //   analyzedARFF(type, Analyzers.decompose(false, true, false), "_birlesik_typo");
-            //   analyzedARFF(type, Analyzers.decompose(true, true, false), "_ayrik_typo");
+            analyzedARFF(type, Analyzers.decompose(false, true, false), "_birlesik_typo");
+            analyzedARFF(type, Analyzers.decompose(true, true, false), "_ayrik_typo");
             analyzedARFF(type, Analyzers.decompose(false, true, true), "_birlesik_mapping_typo");
             analyzedARFF(type, Analyzers.decompose(true, true, true), "_ayrik_mapping_typo");
         }
