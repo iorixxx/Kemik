@@ -56,23 +56,15 @@ class Analyzers {
                 .build();
     }
 
-    static Analyzer decompose(boolean decompose, boolean typo, boolean mapping) throws IOException {
+    static Analyzer decompose(boolean decompose, boolean typo) throws IOException {
 
         if (typo)
-            if (mapping)
-                return CustomAnalyzer.builder()
-                        .addCharFilter(MappingCharFilterFactory.class, "mapping", "turkish_mapping_typo.txt")
-                        .addCharFilter(StemFirstCompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
-                        .withTokenizer("standard")
-                        .addTokenFilter("turkishlowercase")
-                        .build();
-            else
-                return CustomAnalyzer.builder()
-                        .addCharFilter(StemFirstCompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
-                        .withTokenizer("standard")
-                        .addTokenFilter("turkishlowercase")
-                        .addTokenFilter("stemmeroverride", "dictionary", "turkish_typo.txt")
-                        .build();
+            return CustomAnalyzer.builder()
+                    .addCharFilter(StemFirstCompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
+                    .withTokenizer("standard")
+                    .addTokenFilter("turkishlowercase")
+                    .addTokenFilter(TypoTokenFilterFactory.class, "dictionary", "turkish_typo.txt")
+                    .build();
 
         else
             return CustomAnalyzer.builder()
@@ -161,12 +153,12 @@ class Analyzers {
 
         String text = "masaüstü newyork catwalk hamamböceği genel kurmay genelkurmay";
 
-        getAnalyzedTokens(text, decompose(true, false, false));
+        getAnalyzedTokens(text, decompose(true, false));
 
         System.out.println("----------decompose=false--------------");
         text = "masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı";
 
-        System.out.println(getAnalyzedString(text, decompose(false, false, false)));
+        System.out.println(getAnalyzedString(text, decompose(false, false)));
 
         text = "yunanlı orjinal cimnastik yapmışlar anotomi motorsiklet motorsiklette orjinali orjinalleri";
         System.out.println("--------typo----------------");
@@ -180,12 +172,12 @@ class Analyzers {
 
         text = "teröristbaşının orjinal cimnastik masaüstü newyork catwalk hamamböceği hamamböceklerini genel kurmay genelkurmay süper market süper marketler süpermarket süpermarketler";
         System.out.println("----------decompose=true,typo=true--------------");
-        System.out.println(getAnalyzedString(text, decompose(true, true, false)));
+        System.out.println(getAnalyzedString(text, decompose(true, true)));
 
         System.out.println("----------decompose=false,typo=true--------------");
         text = "teröristbaşının orjinal cimnastik masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı hamamböceklerini süper market süper marketler süpermarket süpermarketler";
 
-        System.out.println(getAnalyzedString(text, decompose(false, true, false)));
+        System.out.println(getAnalyzedString(text, decompose(false, true)));
 
         text = "teröristbaşının terörist başının orjinal cimnastik masa üstü new york cat walk hamam böceği genel kurmay genelkurmay köpek balığı hamamböceklerini süper market süper marketler süpermarket süpermarketler";
 
@@ -653,10 +645,10 @@ class Analyzers {
         System.out.println(stemmed);
 
         System.out.println("----------decompose=false,typo=true,mapping=true--------------");
-        System.out.println(getAnalyzedString(stemmed, decompose(false, true, true)));
+        System.out.println(getAnalyzedString(stemmed, decompose(false, true)));
 
         System.out.println("----------decompose=true,typo=true,mapping=true--------------");
-        System.out.println(getAnalyzedString(stemmed, decompose(true, true, true)));
+        System.out.println(getAnalyzedString(stemmed, decompose(true, true)));
 
     }
 }

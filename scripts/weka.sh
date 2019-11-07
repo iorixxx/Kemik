@@ -23,16 +23,17 @@ for set in MIL TRT TTC3600; do
     echo ${f}
     name=$(echo "$f" | cut -f 1 -d '.')
     echo "${name}.txt"
-    echo "vectors/${f##/*/}"
+    echo "vectors/${f##*/}"
 
 
-    java -Dfile.encoding=UTF-8 -Djava.awt.headless=true -server -Xms18g -Xmx18g -cp weka.jar weka.filters.unsupervised.attribute.StringToWordVector -i ${f} > "vectors/${f##/*/}"
+    java -Dfile.encoding=UTF-8 -Djava.awt.headless=true -server -Xms18g -Xmx18g -cp weka.jar weka.filters.unsupervised.attribute.StringToWordVector -i ${f} > "vectors/${f##*/}"
 
     for i in {1..4}; do
 
     echo "results/${name}_${acronym[${i}]}.txt"
-    java --add-opens=java.base/java.lang=ALL-UNNAMED -Dfile.encoding=UTF-8 -Djava.awt.headless=true -server -Xms18g -Xmx18g -cp weka.jar ${method[${i}]} -c 1 -x 10 -t "vectors/${f##/*/}" > "results/${name}_${acronym[${i}]}.txt"
+    java -Dfile.encoding=UTF-8 -Djava.awt.headless=true -server -Xms18g -Xmx18g -cp weka.jar ${method[${i}]} -c 1 -x 10 -t "vectors/${f##*/}" > "results/${name}_${acronym[${i}]}.txt" &
 
     done
+    wait
     done
 done
