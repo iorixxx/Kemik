@@ -1,6 +1,7 @@
 package edu.anadolu;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -24,10 +25,10 @@ import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import static edu.anadolu.Analyzers.analyzerWrapper;
+import static edu.anadolu.DocType.*;
 import static edu.anadolu.DocType.MIL;
 import static edu.anadolu.DocType.TRT;
 import static edu.anadolu.DocType.TTC3600;
-import static edu.anadolu.DocType.*;
 import static edu.anadolu.Factory.*;
 
 public class App {
@@ -40,11 +41,27 @@ public class App {
             System.out.println("processing " + type);
             //  arff(type);
             analyzedARFF(type, Analyzers.plain(), "_plain");
-            analyzedARFF(type, Analyzers.decompose(false, false), "_birlesik");
-            analyzedARFF(type, Analyzers.decompose(true, false), "_ayrik");
+            //  analyzedARFF(type, Analyzers.decompose(false, false), "_birlesik");
+            analyzedARFF(type,
+                    CustomAnalyzer.builder()
+                            .withTokenizer("standard")
+                            .addTokenFilter("apostrophe")
+                            .addTokenFilter("turkishlowercase")
+                            .addTokenFilter(CompoundTokenFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt")
+                            .build()
+                    , "_ayrik");
             analyzedARFF(type, Analyzers.typo(), "_typo");
-            analyzedARFF(type, Analyzers.decompose(false, true), "_birlesik_typo");
-            analyzedARFF(type, Analyzers.decompose(true, true), "_ayrik_typo");
+            //  analyzedARFF(type, Analyzers.decompose(false, true), "_birlesik_typo");
+
+            analyzedARFF(type,
+                    CustomAnalyzer.builder()
+                            .withTokenizer("standard")
+                            .addTokenFilter("apostrophe")
+                            .addTokenFilter("turkishlowercase")
+                            .addTokenFilter(TypoTokenFilterFactory.class, "dictionary", "turkish_typo.txt")
+                            .addTokenFilter(CompoundTokenFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt")
+                            .build(),
+                    "_ayrik_typo");
         }
     }
 
@@ -122,8 +139,8 @@ public class App {
             }
 
             // TODO
-            String stemmed = Analyzers.getAnalyzedString(iDoc.content(), stemmer);
-            String content = weka.core.Utils.quote(Analyzers.getAnalyzedString(stemmed, analyzer));
+            // String stemmed = Analyzers.getAnalyzedString(iDoc.content(), stemmer);
+            String content = weka.core.Utils.quote(Analyzers.getAnalyzedString(iDoc.content(), analyzer));
 
             out.print(category);
             out.print(",");

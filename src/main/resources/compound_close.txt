@@ -57,7 +57,7 @@ uyuz_sineği
 deniz_yılanı
 ok_yılanı
 su_yılanı
-Ankara_keçisi
+ankara_keçisi
 dağ_keçisi
 yaban_keçisi
 fındık_faresi

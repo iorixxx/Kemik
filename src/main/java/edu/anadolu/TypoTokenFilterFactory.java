@@ -3,11 +3,13 @@ package edu.anadolu;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.KeywordAttribute;
 import org.apache.lucene.analysis.util.*;
 
 import java.io.IOException;
 import java.util.*;
+
+import static edu.anadolu.Analyzers.getAnalyzedString;
+import static edu.anadolu.Analyzers.typo;
 
 public class TypoTokenFilterFactory extends TokenFilterFactory implements ResourceLoaderAware, MultiTermAwareComponent {
 
@@ -56,6 +58,7 @@ public class TypoTokenFilterFactory extends TokenFilterFactory implements Resour
             normMap.put(parts[0], parts[1]);
         }
 
+
     }
 
 
@@ -64,7 +67,6 @@ public class TypoTokenFilterFactory extends TokenFilterFactory implements Resour
         private final HashMap<String, String> map;
 
         private final CharTermAttribute termAttribute = addAttribute(CharTermAttribute.class);
-        private final KeywordAttribute keywordAttribute = addAttribute(KeywordAttribute.class);
 
         TypoTokenFilter(TokenStream input, HashMap<String, String> map) {
             super(input);
@@ -75,21 +77,34 @@ public class TypoTokenFilterFactory extends TokenFilterFactory implements Resour
         public boolean incrementToken() throws IOException {
 
             if (!input.incrementToken()) return false;
-            if (keywordAttribute.isKeyword()) return true;
 
             final String term = termAttribute.toString();
 
-            boolean matched = false;
+            //    boolean matched = false;
+
+            List<String> matchedKeys = new ArrayList<>();
+
             for (String key : map.keySet()) {
                 if (term.startsWith(key)) {
-                    if (matched) {
-                        System.out.println("key " + key);
-                    }
-                    termAttribute.setEmpty().append(map.get(key));
-                    matched = true;
+                    matchedKeys.add(key);
                 }
             }
+
+            if (matchedKeys.size() == 1) {
+                termAttribute.setEmpty().append(map.get(matchedKeys.get(0)));
+            } else if (matchedKeys.size() > 1) {
+                String minKey = Collections.min(matchedKeys, Comparator.comparingInt(String::length));
+                termAttribute.setEmpty().append(map.get(minKey));
+                System.out.println(minKey + " " + matchedKeys);
+            }
+
             return true;
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        String text = "egzos egzost yunanlı orjinal cimnastik yapmışlar anotomi motorsiklet motorsiklette orjinali orjinalleri";
+        System.out.println("--------typo----------------");
+        System.out.println(getAnalyzedString(text, typo()));
     }
 }
