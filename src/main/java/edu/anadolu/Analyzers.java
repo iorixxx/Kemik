@@ -22,7 +22,7 @@ class Analyzers {
     static Analyzer plain() throws IOException {
         return CustomAnalyzer.builder()
                 .withTokenizer("standard")
-                //  .addTokenFilter("apostrophe")
+                .addTokenFilter("apostrophe")
                 .addTokenFilter("turkishlowercase")
                 .build();
     }
@@ -30,6 +30,7 @@ class Analyzers {
     private static Analyzer shingle() throws IOException {
         return CustomAnalyzer.builder()
                 .withTokenizer("standard")
+                .addTokenFilter("apostrophe")
                 .addTokenFilter("turkishlowercase")
                 .addTokenFilter(ShingleFilterFactory.class,
                         "minShingleSize", "2",
@@ -48,13 +49,14 @@ class Analyzers {
         return new PerFieldAnalyzerWrapper(plain(), analyzerMap);
     }
 
-    private static Analyzer compound() throws IOException {
-        return CustomAnalyzer.builder()
-                .withTokenizer("standard")
-                .addTokenFilter("turkishlowercase")
-                .addTokenFilter("DictionaryCompoundWord", "dictionary", "dictionary.txt")
-                .build();
-    }
+//    private static Analyzer compound() throws IOException {
+//        return CustomAnalyzer.builder()
+//                .withTokenizer("standard")
+//                .addTokenFilter("apostrophe")
+//                .addTokenFilter("turkishlowercase")
+//                .addTokenFilter("DictionaryCompoundWord", "dictionary", "dictionary.txt")
+//                .build();
+//    }
 
     static Analyzer decompose(boolean decompose, boolean typo) throws IOException {
 
@@ -62,6 +64,7 @@ class Analyzers {
             return CustomAnalyzer.builder()
                     .addCharFilter(StemFirstCompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
                     .withTokenizer("standard")
+                    .addTokenFilter("apostrophe")
                     .addTokenFilter("turkishlowercase")
                     .addTokenFilter(TypoTokenFilterFactory.class, "dictionary", "turkish_typo.txt")
                     .build();
@@ -70,6 +73,7 @@ class Analyzers {
             return CustomAnalyzer.builder()
                     .addCharFilter(StemFirstCompoundCharFilterFactory.class, "mapping", "compound.txt,compound_close.txt,compound_open.txt,compound_4b.txt,compound_m.txt,compound_ttc.txt", "decompose", Boolean.toString(decompose))
                     .withTokenizer("standard")
+                    .addTokenFilter("apostrophe")
                     .addTokenFilter("turkishlowercase")
                     .build();
 
@@ -78,16 +82,9 @@ class Analyzers {
     static Analyzer typo() throws IOException {
         return CustomAnalyzer.builder()
                 .withTokenizer("standard")
+                .addTokenFilter("apostrophe")
                 .addTokenFilter("turkishlowercase")
-                .addTokenFilter("stemmeroverride", "dictionary", "turkish_typo.txt")
-                .build();
-    }
-
-    static Analyzer mapping_typo() throws IOException {
-        return CustomAnalyzer.builder()
-                .addCharFilter(MappingCharFilterFactory.class, "mapping", "turkish_mapping_typo.txt")
-                .withTokenizer("standard")
-                .addTokenFilter("turkishlowercase")
+                .addTokenFilter(TypoTokenFilterFactory.class, "dictionary", "turkish_typo.txt")
                 .build();
     }
 
@@ -95,7 +92,9 @@ class Analyzers {
         return CustomAnalyzer.builder()
                 .addCharFilter(MappingCharFilterFactory.class, "mapping", "turkish_mapping_typo.txt")
                 .withTokenizer("standard")
+                .addTokenFilter("apostrophe")
                 .addTokenFilter("turkishlowercase")
+                .addTokenFilter(TypoTokenFilterFactory.class, "dictionary", "turkish_typo.txt")
                 .addTokenFilter(org.apache.lucene.analysis.tr.Zemberek3StemFilterFactory.class)
                 .build();
     }
@@ -133,7 +132,7 @@ class Analyzers {
 
             final CharTermAttribute termAtt = ts.addAttribute(CharTermAttribute.class);
 
-            final TypeAttribute typeAtt = ts.addAttribute(TypeAttribute.class);
+            //final TypeAttribute typeAtt = ts.addAttribute(TypeAttribute.class);
             ts.reset(); // Resets this stream to the beginning. (Required)
             while (ts.incrementToken()) {
                 builder.append(termAtt.buffer(), 0, termAtt.length());
@@ -163,12 +162,6 @@ class Analyzers {
         text = "yunanlı orjinal cimnastik yapmışlar anotomi motorsiklet motorsiklette orjinali orjinalleri";
         System.out.println("--------typo----------------");
         System.out.println(getAnalyzedString(text, typo()));
-
-        System.out.println("---------mapping_typo---------------");
-        System.out.println(getAnalyzedString(text, mapping_typo()));
-
-        System.out.println("---------mapping_typo---------------");
-        System.out.println(getAnalyzedString("psikiyatrist psikiyatristi psikiyatristin psikiyatristiniz psikiyatristler psikiyatristlerin", mapping_typo()));
 
         text = "teröristbaşının orjinal cimnastik masaüstü newyork catwalk hamamböceği hamamböceklerini genel kurmay genelkurmay süper market süper marketler süpermarket süpermarketler";
         System.out.println("----------decompose=true,typo=true--------------");

@@ -12,8 +12,6 @@ acronym[3]=J48
 method[4]=weka.classifiers.functions.SMO
 acronym[4]=SMO
 
-rm -rf vectors
-rm -rf reults
 mkdir -p vectors
 mkdir -p results
 

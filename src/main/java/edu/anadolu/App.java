@@ -43,7 +43,6 @@ public class App {
             analyzedARFF(type, Analyzers.decompose(false, false), "_birlesik");
             analyzedARFF(type, Analyzers.decompose(true, false), "_ayrik");
             analyzedARFF(type, Analyzers.typo(), "_typo");
-            analyzedARFF(type, Analyzers.mapping_typo(), "_mapping_typo");
             analyzedARFF(type, Analyzers.decompose(false, true), "_birlesik_typo");
             analyzedARFF(type, Analyzers.decompose(true, true), "_ayrik_typo");
         }
