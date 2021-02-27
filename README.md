@@ -21,5 +21,6 @@ Bu sebepten dolayı bildirimizin kendi kopyamızı daha okunur olduğu için [bu
 Bildirimize atıf vermek için lütfen kaynakçanıza aşağıdaki girdiyi ekleyiniz.
 
 ``` tex
-Arslan A., Civan İ., Turan Ü.D., "Türkçede Sıkça 'Yanlış Yazılan' Sözcüklerin Büyük Ölçekli Derlemlerde Tespit Edilmesi", II. Uluslararası Türk Dili ve Edebiyatı Bilgi Söleni, 21-23 Haziran 2019, ISBN: 978-605-7638-44-1, 809-822, Erzurum, Türkiye.
+Arslan A., Civan İ., ve Turan Ü.D. (2019). "Türkçede Sıkça 'Yanlış Yazılan' Sözcüklerin Büyük Ölçekli Derlemlerde Tespit Edilmesi",
+II. Uluslararası Türk Dili ve Edebiyatı Bilgi Söleni, ISBN: 978-605-7638-44-1, 809-822, Erzurum, Türkiye.
 ```
