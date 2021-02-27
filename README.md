@@ -8,4 +8,18 @@ The [Turkish Language Association](http://tdk.gov.tr) released a dictionary for 
 In the current study, the most frequently observed misspelled words are examined also from a linguistic perspective. Since these so-called misspelled words are all borrowed from various languages, we will provide a brief background on borrowing and a brief evaluation on the suggestions made by the Turkish Language Association. 
 
 ## [II. Uluslararası Türk Dili ve Edebiyatı Bilgi Şöleni](http://bilgisoleni2019.atauni.edu.tr)
-Yanlış-doğru çiftlerinin tümüne [SikcaYapilanYanlislar](https://github.com/iorixxx/Kemik/tree/master/SikcaYapilanYanlislar) adresten erişilebilir.
+Sözlü sunum için kabul edilen bildirimiz 22 Haziran 2019 tarihinde [Öğr. Gör. İlknur Civan](https://akademik.anadolu.edu.tr/ilknurcivan) tarafından sunulmuştur.
+Tam metni içeren bildiri kitapçığı [978-605-7638-44-1](https://ekitap.atauni.edu.tr/wp-content/uploads/2020/05/Son-Türk-Dili-ve-Edebiyati-Bilgi-Söleni-Sempozyumu-21-23-Haziran-2019-Bildiriler-WORD.pdf)
+ISBN numarası ile Atatürk Üniversitesi Yayınevi tarafından [https://ekitap.atauni.edu.tr](https://ekitap.atauni.edu.tr/wp-content/uploads/2020/05/Son-Türk-Dili-ve-Edebiyati-Bilgi-Söleni-Sempozyumu-21-23-Haziran-2019-Bildiriler-WORD.pdf)
+adresinden elektronik ortamda umuma açık olarak yayımlanmıştır. 
+Ancak bildiri kitapçığının bazı bölümlerinde kelimelerin arasında boşluklar dizgi hatasından dolayı görünmemektedir.
+Bu sebepten dolayı bildirimizin kendi kopyamızı daha okunur olduğu için [buradan](https://github.com/iorixxx/Kemik/blob/master/bildiri-tam-metin.pdf) paylaşıyoruz.
+
+Çalışmada kullanılan yanlış-doğru çiftlerinin tümüne [SikcaYapilanYanlislar](https://github.com/iorixxx/Kemik/tree/master/SikcaYapilanYanlislar) adresinden erişilebilir.
+
+## Atıf için
+Bildirimize atıf vermek için lütfen kaynakçanıza aşağıdaki girdiyi ekleyiniz.
+
+``` tex
+Arslan A., Civan İ., Turan Ü.D., "Türkçede Sıkça 'Yanlış Yazılan' Sözcüklerin Büyük Ölçekli Derlemlerde Tespit Edilmesi", II. Uluslararası Türk Dili ve Edebiyatı Bilgi Söleni, 21-23 Haziran 2019, ISBN: 978-605-7638-44-1, 809-822, Erzurum, Türkiye.
+```
